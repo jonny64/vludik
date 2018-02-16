@@ -1,0 +1,34 @@
+{
+    "name": "vludik",
+    "displayName": "vludik",
+    "description": "navigation hotkeys and templates for Eludia.pm framework (http://github.com/do-/eludia)",
+    "version": "0.0.1",
+    "publisher": "vludik",
+    "engines": {
+        "vscode": "^1.20.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.goto_content"
+    ],
+    "main": "./extension",
+    "contributes": {
+        "commands": [{
+            "command": "extension.goto_content",
+            "title": "Goto Content"
+        }]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "eslint": "^4.11.0",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    }
+}
