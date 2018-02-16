@@ -11,14 +11,46 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.goto_content"
+        "onCommand:extension.goto_select",
+        "onCommand:extension.goto_draw",
+        "onCommand:extension.goto_model"
     ],
     "main": "./extension",
     "contributes": {
-        "commands": [{
-            "command": "extension.goto_content",
-            "title": "Goto Content"
-        }]
+        "commands": [
+            {
+                "command": "extension.goto_select",
+                "title": "Goto select_"
+            },
+            {
+                "command": "extension.goto_draw",
+                "title": "Goto draw_"
+            },
+            {
+                "command": "extension.goto_model",
+                "title": "Goto Model"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "extension.goto_select",
+                "key": "alt+s",
+                "mac": "alt+s",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.goto_draw",
+                "key": "alt+w",
+                "mac": "alt+w",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.goto_model",
+                "key": "f5",
+                "mac": "f5",
+                "when": "editorTextFocus"
+            }
+        ]
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
