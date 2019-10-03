@@ -12,7 +12,9 @@
     ],
     "activationEvents": [
         "onCommand:extension.goto_select",
+        "onCommand:extension.goto_get_item",
         "onCommand:extension.goto_draw",
+        "onCommand:extension.goto_draw_item",
         "onCommand:extension.goto_model"
     ],
     "main": "./extension",
@@ -23,8 +25,16 @@
                 "title": "Goto select_"
             },
             {
+                "command": "extension.goto_get_item",
+                "title": "Goto get_item_of"
+            },
+            {
                 "command": "extension.goto_draw",
                 "title": "Goto draw_"
+            },
+            {
+                "command": "extension.goto_draw_item",
+                "title": "Goto draw_item_of"
             },
             {
                 "command": "extension.goto_model",
@@ -39,9 +49,21 @@
                 "when": "editorTextFocus"
             },
             {
+                "command": "extension.goto_get_item",
+                "key": "alt+g",
+                "mac": "alt+g",
+                "when": "editorTextFocus"
+            },
+            {
                 "command": "extension.goto_draw",
                 "key": "alt+w",
                 "mac": "alt+w",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.goto_draw_item",
+                "key": "alt+m",
+                "mac": "alt+m",
                 "when": "editorTextFocus"
             },
             {

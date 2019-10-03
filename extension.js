@@ -5,24 +5,43 @@ function activate(context) {
 
     console.log('starting vludik');
 
-    function focusFunction( prefix ) {
+    function focusFunction (func) {
         let editor = vscode.window.activeTextEditor;
         var uri = vscode.Uri.file(editor.document.fileName);
         vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', uri).then(syms => {
-            let sym = syms.find(function(i) {return i.name.startsWith(prefix)})
-            editor.revealRange(sym.location.range)
+            if (!Array.isArray(syms)) {
+                console.log(syms);
+                return
+            }
+            let sym = syms.find(function(i) {return i.name.startsWith(func)})
+            if (sym) {
+                return editor.revealRange(sym.location.range)
+            }
+            console.log (func + ' not found!')
         });
     }
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', function () {
         open_view('Content').then(() => {
-            focusFunction ('select_')
+            focusFunction ('select_' + type_name ())
+        });
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_get_item', function () {
+        open_view('Content').then(() => {
+            focusFunction ('get_item_of_' + type_name ())
         });
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw', function () {
         open_view('Presentation').then(() => {
-            focusFunction ('draw_')
+            focusFunction ('draw_' + type_name ())
+        });
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', function () {
+        open_view('Presentation').then(() => {
+            focusFunction ('draw_item_of_' + type_name ())
         });
     }));
 
@@ -38,6 +57,11 @@ function activate(context) {
             vscode.window.showTextDocument(doc);
             console.log('opened ' + file_path);
         })
+    }
+
+    function type_name () {
+        var file = path.parse(vscode.window.activeTextEditor.document.fileName);
+        return file.name;
     }
 }
 
