@@ -13,10 +13,15 @@ function activate(context) {
                 console.log(syms);
                 return
             }
-            let sym = syms.find(function(i) {return i.name.startsWith(func)})
-            if (sym) {
-                return editor.revealRange(sym.location.range)
+
+            for (i of syms) {
+                for (c of i.children) {
+                    if (c.name.startsWith(func)) {
+                        return editor.revealRange(c.location.range)
+                    }
+                }
             }
+
             console.log (func + ' not found!')
         });
     }
@@ -52,7 +57,7 @@ function activate(context) {
     function open_view(view) {
         var view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
         var lib_dir = path.dirname(view_file.dir);
-        var file_path = path.join(lib_dir, view, view_file.name + '.' + 'pm');
+        var file_path = path.join(lib_dir, view, view_file.name + '.' + 'js');
         return vscode.workspace.openTextDocument(file_path).then(doc => {
             vscode.window.showTextDocument(doc);
             console.log('opened ' + file_path);
