@@ -13,10 +13,11 @@ function activate(context) {
                 console.log(syms);
                 return
             }
-
+            console.log (syms)
             for (i of syms) {
                 for (c of i.children) {
                     if (c.name.startsWith(func)) {
+                        console.log (c)
                         return editor.revealRange(c.location.range)
                     }
                 }
@@ -39,14 +40,14 @@ function activate(context) {
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw', function () {
-        open_view('Presentation').then(() => {
-            focusFunction ('draw_' + type_name ())
+        open_view('View').then(() => {
+            focusFunction ('$_DRAW.' + type_name ())
         });
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', function () {
-        open_view('Presentation').then(() => {
-            focusFunction ('draw_item_of_' + type_name ())
+        open_view('View').then(() => {
+            focusFunction ('$_DRAW.' + type_name ())
         });
     }));
 
@@ -55,13 +56,35 @@ function activate(context) {
     }));
 
     function open_view(view) {
-        var view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
-        var lib_dir = path.dirname(view_file.dir);
-        var file_path = path.join(lib_dir, view, view_file.name + '.' + 'js');
+        let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
+        let view_dir = view_path (view);
+        let root = project_path (view_file.dir)
+        let file_path = path.join(root, view_dir, view_file.name + '.' + 'js');
         return vscode.workspace.openTextDocument(file_path).then(doc => {
             vscode.window.showTextDocument(doc);
             console.log('opened ' + file_path);
         })
+    }
+
+    function view_path (view) {
+        switch (view) {
+            case 'Model': return ['back', 'lib', 'Model'].join ('/');
+            case 'Content': return ['back', 'lib', 'Content'].join ('/');
+            case 'Data': return ['front', 'root', '_', 'app', 'js', 'data'].join ('/');
+            case 'View': return ['front', 'root', '_', 'app', 'js', 'view'].join ('/');
+            case 'Html': return ['front', 'root', '_', 'app', 'html'].join ('/');
+        }
+    }
+
+    function project_path (dir) {
+        console.log (dir)
+        while (dir) {
+            dir = path.dirname (dir)
+            if (dir.endsWith ('back') || dir.endsWith ('front')) {
+                return path.dirname (dir)
+            }
+        }
+        throw 'cant find project path! ' + dir
     }
 
     function type_name () {
