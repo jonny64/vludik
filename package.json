@@ -15,6 +15,7 @@
         "onCommand:extension.goto_get_item",
         "onCommand:extension.goto_draw",
         "onCommand:extension.goto_draw_item",
+        "onCommand:extension.goto_html",
         "onCommand:extension.goto_model"
     ],
     "main": "./extension",
@@ -35,6 +36,10 @@
             {
                 "command": "extension.goto_draw_item",
                 "title": "Goto draw_item_of"
+            },
+            {
+                "command": "extension.goto_html",
+                "title": "Goto html"
             },
             {
                 "command": "extension.goto_model",
@@ -58,6 +63,12 @@
                 "command": "extension.goto_draw",
                 "key": "alt+w",
                 "mac": "alt+w",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.goto_html",
+                "key": "alt+e",
+                "mac": "alt+e",
                 "when": "editorTextFocus"
             },
             {

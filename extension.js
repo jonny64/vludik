@@ -55,11 +55,16 @@ function activate(context) {
         open_view('Model');
     }));
 
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_html', function () {
+        open_view('Html');
+    }));
+
     function open_view(view) {
         let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
         let view_dir = view_path (view);
         let root = project_path (view_file.dir)
-        let file_path = path.join(root, view_dir, view_file.name + '.' + 'js');
+        let ext = view == 'Html'? 'html' : 'js'
+        let file_path = path.join(root, view_dir, view_file.name + '.' + ext);
         return vscode.workspace.openTextDocument(file_path).then(doc => {
             vscode.window.showTextDocument(doc);
             console.log('opened ' + file_path);
