@@ -9,17 +9,22 @@ function activate(context) {
         let editor = vscode.window.activeTextEditor;
         var uri = vscode.Uri.file(editor.document.fileName);
         vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', uri).then(syms => {
+            console.log (syms)
             if (!Array.isArray(syms)) {
-                console.log(syms);
                 return
             }
-            console.log (syms)
+
             for (i of syms) {
                 for (c of i.children) {
                     if (c.name.startsWith(func)) {
                         console.log (c)
                         return editor.revealRange(c.location.range)
                     }
+                }
+
+                if (i.name.startsWith(func)) {
+                    console.log (i)
+                    return editor.revealRange(c.location.range)
                 }
             }
 
@@ -39,15 +44,21 @@ function activate(context) {
         });
     }));
 
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_data', function () {
+        open_view('Data').then(() => {
+            focusFunction (type_name ())
+        });
+	}));
+
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw', function () {
         open_view('View').then(() => {
-            focusFunction ('$_DRAW.' + type_name ())
+            focusFunction (type_name ())
         });
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', function () {
         open_view('View').then(() => {
-            focusFunction ('$_DRAW.' + type_name ())
+            focusFunction (type_name ())
         });
     }));
 

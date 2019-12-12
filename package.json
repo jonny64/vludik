@@ -13,6 +13,7 @@
     "activationEvents": [
         "onCommand:extension.goto_select",
         "onCommand:extension.goto_get_item",
+        "onCommand:extension.goto_data",
         "onCommand:extension.goto_draw",
         "onCommand:extension.goto_draw_item",
         "onCommand:extension.goto_html",
@@ -28,6 +29,10 @@
             {
                 "command": "extension.goto_get_item",
                 "title": "Goto get_item_of"
+            },
+            {
+                "command": "extension.goto_data",
+                "title": "Goto data"
             },
             {
                 "command": "extension.goto_draw",
@@ -60,21 +65,27 @@
                 "when": "editorTextFocus"
             },
             {
+                "command": "extension.goto_data",
+                "key": "alt+d",
+                "mac": "alt+d",
+                "when": "editorTextFocus"
+            },
+            {
                 "command": "extension.goto_draw",
                 "key": "alt+w",
                 "mac": "alt+w",
                 "when": "editorTextFocus"
             },
             {
-                "command": "extension.goto_html",
-                "key": "alt+e",
-                "mac": "alt+e",
-                "when": "editorTextFocus"
-            },
-            {
                 "command": "extension.goto_draw_item",
                 "key": "alt+m",
                 "mac": "alt+m",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.goto_html",
+                "key": "alt+e",
+                "mac": "alt+e",
                 "when": "editorTextFocus"
             },
             {
