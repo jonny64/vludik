@@ -1,6 +1,6 @@
 # vludik README
 
-    navigation hotkeys and templates for Eludia.pm framework (http://github.com/do-/eludia)
+    navigation hotkeys and templates for dia.js framework (https://github.com/do-/dia.js/wiki)
 
 ## Features
 
