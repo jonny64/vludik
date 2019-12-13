@@ -8,13 +8,20 @@
 
 	alt + g = get_item
 	alt + s = select
-	alt + g = draw_item
-	alt + w = draw / xtr:js/view
 	alt + u = do_update
 	alt + c = do_create
-	alt + d = do_delete / xtr:js/data
-	alt + e = xtr:html
+	alt + d = js/data
+	alt + m = js/view item
+	alt + w = js/view roster
+	alt + e = html
 
 	F5      = goto model and back to screen where we started
 
-## Known Issues
+## Building
+	npm install vsce
+	vsce package
+
+builds *.vsix package
+
+## Installation
+`Ctrl Shift P` - `Install from vsix`
