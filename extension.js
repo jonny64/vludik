@@ -91,10 +91,30 @@ function activate(context) {
                 let copy_to = path.join(root, view_dir, new_type + '.' + ext)
                 if (fs.existsSync (copy_to)) continue
 
-                fs.copyFile (copy_from, copy_to, () => open_file (copy_to))
+                fs.copyFileSync (copy_from, copy_to)
+                replace_in_file (copy_to, type, new_type, () => open_file (copy_to))
             }
         });
     }));
+
+    function replace_in_file (file_path, from, to, callback) {
+
+        var done = callback
+
+        fs.readFile(file_path, 'utf8', function (err, data) {
+
+            if (err) {
+                return console.log(err);
+            }
+
+            var result = data.replace(new RegExp(from,'g'), to);
+
+            fs.writeFile(file_path, result, 'utf8', function (err) {
+                if (err) return console.log(err);
+                done ()
+            });
+        });
+    }
 
     function open_view(view) {
         let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
