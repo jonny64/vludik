@@ -8,12 +8,14 @@ function activate(context) {
 
     function focusFunction (func) {
         let editor = vscode.window.activeTextEditor;
-        var uri = vscode.Uri.file(editor.document.fileName);
+        let uri = vscode.Uri.file(editor.document.fileName);
         vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', uri).then(syms => {
             console.log (syms)
             if (!Array.isArray(syms)) {
                 return
             }
+
+            let editor = vscode.window.activeTextEditor;
 
             for (i of syms) {
                 for (c of i.children) {
@@ -122,7 +124,7 @@ function activate(context) {
         let root = project_path (view_file.dir)
         let ext = view == 'Html'? 'html' : 'js'
         let file_path = path.join(root, view_dir, view_file.name + '.' + ext);
-        open_file (file_path)
+        return open_file (file_path)
     }
 
     function open_file (file_path) {
