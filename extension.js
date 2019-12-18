@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const path = require("path");
+const fs = require("fs");
 
 function activate(context) {
 
@@ -70,12 +71,41 @@ function activate(context) {
         open_view('Html');
     }));
 
+    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', function () {
+
+        let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
+        let type =  view_file.name
+        let root = project_path (view_file.dir)
+
+        vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"}).then(new_type => {
+
+            if (!new_type) return;
+
+            for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
+
+                let view_dir = view_path (view)
+                let ext = view == 'Html'? 'html' : 'js'
+                let copy_from = path.join(root, view_dir, type + '.' + ext)
+                if (!fs.existsSync (copy_from)) continue
+
+                let copy_to = path.join(root, view_dir, new_type + '.' + ext)
+                if (fs.existsSync (copy_to)) continue
+
+                fs.copyFile (copy_from, copy_to, () => open_file (copy_to))
+            }
+        });
+    }));
+
     function open_view(view) {
         let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
         let view_dir = view_path (view);
         let root = project_path (view_file.dir)
         let ext = view == 'Html'? 'html' : 'js'
         let file_path = path.join(root, view_dir, view_file.name + '.' + ext);
+        open_file (file_path)
+    }
+
+    function open_file (file_path) {
         return vscode.workspace.openTextDocument(file_path).then(doc => {
             vscode.window.showTextDocument(doc);
             console.log('opened ' + file_path);
