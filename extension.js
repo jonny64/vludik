@@ -123,7 +123,7 @@ function activate(context) {
         let view_dir = view_path (view);
         let root = project_path (view_file.dir)
         let ext = view == 'Html'? 'html' : 'js'
-        let file_path = path.join(root, view_dir, view_file.name + '.' + ext);
+        let file_path = guess_file_path (path.join(root, view_dir), view_file.name, ext)
         return await open_file (file_path)
     }
 
@@ -131,6 +131,61 @@ function activate(context) {
         let doc = await vscode.workspace.openTextDocument(file_path)
         let editor = await vscode.window.showTextDocument(doc);
         console.log('opened ' + file_path);
+    }
+
+    function guess_file_path (view_path, file_name, ext) {
+
+        let file_path = ''
+
+        if  (!fs.existsSync(file_path)) {
+            file_path = path.join(view_path, file_name + '.' + ext);
+        }
+        console.log (file_path)
+        if  (!fs.existsSync(file_path)) {
+            file_path = path.join(view_path, plural (file_name) + '.' + ext);
+        }
+        console.log (file_path)
+        if  (!fs.existsSync(file_path)) {
+            file_path = path.join(view_path, singular (file_name) + '.' + ext);
+        }
+        console.log (file_path)
+        if  (!fs.existsSync(file_path)) {
+            file_path = path.join(view_path, plural (singular (file_name)) + '.' + ext);
+        }
+        console.log (file_path)
+        return file_path
+    }
+
+    function plural (word) {
+        return word + 's'
+    }
+
+    function singular (word) {
+
+        const endings = {
+            ves: 'fe',
+            ies: 'y',
+            i: 'us',
+            zes: '',
+            ses: '',
+            es: '',
+            s: '',
+            _roster: '',
+            _new: '',
+            _popup: '',
+        };
+
+        return word.replace(
+            new RegExp(`(${Object.keys(endings).join('|')})$`),
+            suffix => endings[suffix]
+        );
+    }
+
+    function open_file (file_path) {
+        return vscode.workspace.openTextDocument(file_path).then(doc => {
+            vscode.window.showTextDocument(doc);
+            console.log('opened ' + file_path);
+        })
     }
 
     function view_path (view) {
