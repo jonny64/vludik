@@ -21,7 +21,7 @@
 	npm install vsce
 	vsce package
 
-builds *.vsix package
+builds [*.vsix](https://github.com/jonny64/vludik/releases) package
 
 ## Installation
 `Ctrl Shift P` - `Install from vsix`
