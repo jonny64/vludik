@@ -118,20 +118,19 @@ function activate(context) {
         });
     }
 
-    function open_view(view) {
+    async function open_view(view) {
         let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
         let view_dir = view_path (view);
         let root = project_path (view_file.dir)
         let ext = view == 'Html'? 'html' : 'js'
         let file_path = path.join(root, view_dir, view_file.name + '.' + ext);
-        return open_file (file_path)
+        return await open_file (file_path)
     }
 
-    function open_file (file_path) {
-        return vscode.workspace.openTextDocument(file_path).then(doc => {
-            vscode.window.showTextDocument(doc);
-            console.log('opened ' + file_path);
-        })
+    async function open_file (file_path) {
+        let doc = await vscode.workspace.openTextDocument(file_path)
+        let editor = await vscode.window.showTextDocument(doc);
+        console.log('opened ' + file_path);
     }
 
     function view_path (view) {
