@@ -137,22 +137,33 @@ function activate(context) {
 
         let file_path = ''
 
-        if  (!fs.existsSync(file_path)) {
+        for (prefix of ['', 'oltp', 'dw']) {
+
             file_path = path.join(view_path, file_name + '.' + ext);
+            console.log (file_path)
+            if (fs.existsSync(file_path)) break;
+
+            file_path = path.join(view_path, prefix, file_name + '.' + ext);
+            console.log (file_path)
+            if (fs.existsSync(file_path)) break;
+
+            file_path = path.join(view_path, prefix, singular (file_name) + '.' + ext);
+            console.log (file_path)
+            if (fs.existsSync(file_path)) break;
+
+            file_path = path.join(view_path, prefix, plural (file_name) + '.' + ext);
+            console.log (file_path)
+            if (fs.existsSync(file_path)) break;
+
+            file_path = path.join(view_path, prefix, singular (file_name) + '.' + ext);
+            console.log (file_path)
+            if (fs.existsSync(file_path)) break;
+
+            file_path = path.join(view_path, prefix, plural (singular (file_name)) + '.' + ext);
+            console.log (file_path)
+            if (fs.existsSync(file_path)) break;
         }
-        console.log (file_path)
-        if  (!fs.existsSync(file_path)) {
-            file_path = path.join(view_path, plural (file_name) + '.' + ext);
-        }
-        console.log (file_path)
-        if  (!fs.existsSync(file_path)) {
-            file_path = path.join(view_path, singular (file_name) + '.' + ext);
-        }
-        console.log (file_path)
-        if  (!fs.existsSync(file_path)) {
-            file_path = path.join(view_path, plural (singular (file_name)) + '.' + ext);
-        }
-        console.log (file_path)
+
         return file_path
     }
 
