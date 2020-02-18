@@ -2,7 +2,7 @@
     "name": "vludik",
     "displayName": "vludik",
     "description": "navigation hotkeys and templates for Eludia.pm framework (http://github.com/do-/eludia)",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "vludik",
     "engines": {
         "vscode": "^1.20.0"
