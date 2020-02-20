@@ -1,6 +1,6 @@
 # vludik README
 
-    navigation hotkeys and templates for dia.js framework (https://github.com/do-/dia.js/wiki)
+    navigation hotkeys for dia.js framework (https://github.com/do-/dia.js/wiki)
 
 ## Features
 
@@ -16,6 +16,7 @@
 	alt + e = html
 
 	F5      = goto model and back to screen where we started
+	F12     = copy Content data view html Model to new screen: asks name of new screen
 
 ## Building
 	npm install vsce
