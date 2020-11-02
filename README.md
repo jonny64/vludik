@@ -19,7 +19,7 @@
 	F12     = copy Content data view html Model to new screen: asks name of new screen
 
 ## Building
-	npm install vsce
+	npm install -g vsce
 	vsce package
 
 builds [*.vsix](https://github.com/jonny64/vludik/releases) package
