@@ -4,7 +4,7 @@
 
 ## Features
 
-	use following hotkeys to quickly switch/create functions in Content/Presentation:
+	hotkeys to navigate:
 
 	alt + g = get_item
 	alt + s = select
@@ -19,10 +19,14 @@
 	F12     = copy Content data view html Model to new screen: asks name of new screen
 
 ## Building
-	npm install vsce
+	npm install -g vsce
 	vsce package
 
 builds [*.vsix](https://github.com/jonny64/vludik/releases) package
 
 ## Installation
-`Ctrl Shift P` - `Install from vsix`
+* `Ctrl Shift P` - `Install extensions` - search `vludik` in marketplace
+
+or manually
+
+* `Ctrl Shift P` - `Install from vsix`
