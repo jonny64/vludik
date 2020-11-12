@@ -184,6 +184,7 @@ function activate(context) {
             _roster: '',
             _new: '',
             _popup: '',
+            _common: '',
         };
 
         return word.replace(
