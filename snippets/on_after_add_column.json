@@ -1,0 +1,22 @@
+{
+	"on_after_add_column": {
+		"prefix": "on_",
+		"body": [
+			"on_after_add_column: {\r",
+			"\t${1:col}: [\r",
+			"\t\t{sql: `UPDATE ${TM_FILENAME_BASE:table}\r",
+			"\t\t\tSET\r",
+			"\t\t\t\t${1:col} = ${2:other_table}.${3:col2}\r",
+			"\t\t\tFROM\r",
+			"\t\t\t\t${2:other_table}\r",
+			"\t\t\tWHERE\r",
+			"\t\t\t\t${2:other_table}.uuid = ${TM_FILENAME_BASE:table}.id_${2:other_table}\r",
+			"\t\t`\r",
+			"\t\t\t, params: []\r",
+			"\t\t},\r",
+			"\t],\r",
+			"},"
+		],
+		"description": "description for on_after_add_column"
+	}
+}

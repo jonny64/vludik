@@ -1,6 +1,6 @@
 {
     "name": "vludik",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "publisher": "jonny64",
     "engines": {
         "vscode": "^1.20.0"
@@ -107,6 +107,12 @@
                 "key": "f12",
                 "mac": "f12",
                 "when": "editorTextFocus"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "javascript",
+                "path": "./snippets/on_after_add_column.json"
             }
         ]
     },
