@@ -1,12 +1,12 @@
 {
-	"value-of": {
+	"xsl:value-of": {
 		"prefix": "xs",
 		"body": [
 			"",
 			"\t<xsl:value-of select=\"${1:data/@label}\"/>",
 			""
 		],
-		"description": "value-of"
+		"description": "xsl:value-of"
 	},
 	"xsl:for-each": {
 		"prefix": "xs",
@@ -18,14 +18,14 @@
 		],
 		"description": "xsl:for-each"
 	},
-	"bool": {
+	"xsl:if": {
 		"prefix": "xs",
 		"body": [
 			"",
 			"<xsl:if test=\"${1:data/@is_=1}\">",
 			"  <Data ss:Type=\"String\">${2:есть}</Data>",
 			"</xsl:if>",
-			"<xsl:if test=\"${1:data/@is_=0}\">",
+			"<xsl:if test=\"${2:data/@is_=0}\">",
 			"  <Data ss:Type=\"String\">${3:нет}</Data>",
 			"</xsl:if>",
 			""
