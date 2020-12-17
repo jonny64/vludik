@@ -23,10 +23,10 @@
 		"body": [
 			"",
 			"<xsl:if test=\"${1:data/@is_=1}\">",
-			"  <Data ss:Type=\"String\">${2:есть}</Data>",
+			"  <Data ss:Type=\"String\">${3:есть}</Data>",
 			"</xsl:if>",
 			"<xsl:if test=\"${2:data/@is_=0}\">",
-			"  <Data ss:Type=\"String\">${3:нет}</Data>",
+			"  <Data ss:Type=\"String\">${4:нет}</Data>",
 			"</xsl:if>",
 			""
 		],
