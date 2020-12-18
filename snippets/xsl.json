@@ -2,33 +2,27 @@
 	"xsl:value-of": {
 		"prefix": "xs",
 		"body": [
-			"",
-			"\t<xsl:value-of select=\"${1:data/@label}\"/>",
-			""
+			"<xsl:value-of select=\"data/@${1:label}\"/>"
 		],
 		"description": "xsl:value-of"
 	},
 	"xsl:for-each": {
 		"prefix": "xs",
 		"body": [
-			"",
-			"\t<xsl:for-each select=\"${1:data/items}\">",
-			"\t</xsl:for-each>",
-			""
+			"<xsl:for-each select=\"data/${1:items}\">",
+			"</xsl:for-each>"
 		],
 		"description": "xsl:for-each"
 	},
 	"xsl:if": {
 		"prefix": "xs",
 		"body": [
-			"",
-			"<xsl:if test=\"${1:data/@is_=1}\">",
+			"<xsl:if test=\"data/@${1:is_}=1\">",
 			"  <Data ss:Type=\"String\">${3:есть}</Data>",
 			"</xsl:if>",
-			"<xsl:if test=\"${2:data/@is_=0}\">",
+			"<xsl:if test=\"data/@${2:is_}=0\">",
 			"  <Data ss:Type=\"String\">${4:нет}</Data>",
-			"</xsl:if>",
-			""
+			"</xsl:if>"
 		],
 		"description": "xsl:if"
 	}
