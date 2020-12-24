@@ -25,5 +25,22 @@
 			"</xsl:if>"
 		],
 		"description": "xsl:if"
+	},
+	"xsl:choose": {
+		"prefix": "xs",
+		"body": [
+			"<xsl:choose>",
+			"  <xsl:when test=\"data/@${1:is_}=1\">",
+			"    <Data ss:Type=\"String\">${3:есть}</Data>",
+			"  </xsl:when>",
+			"  <xsl:when test=\"data/@${2:is_}=0\">",
+			"    <Data ss:Type=\"String\">${4:нет}</Data>",
+			"  </xsl:when>",
+			"  <xsl:otherwise>",
+			"    <Data ss:Type=\"String\">${5:не заполнено}</Data>",
+			"  </xsl:otherwise>",
+			"</xsl:choose>"
+		],
+		"description": "xsl:if"
 	}
 }
