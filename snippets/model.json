@@ -17,6 +17,6 @@
 			"\t],\r",
 			"},"
 		],
-		"description": "description for on_after_add_column"
+		"description": "on_after_add_column"
 	}
 }

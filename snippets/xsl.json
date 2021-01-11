@@ -41,6 +41,6 @@
 			"  </xsl:otherwise>",
 			"</xsl:choose>"
 		],
-		"description": "xsl:if"
+		"description": "xsl:choose"
 	}
 }
