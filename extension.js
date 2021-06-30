@@ -82,8 +82,13 @@ function activate(context) {
         let new_type = await vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"})
 
         if (!new_type) return
+        let slices_dir = path.dirname (root)
+        let items = fs.readdirSync (slices_dir)
 
-        let new_slice = await vscode.window.showInputBox({prompt: "Slice: ", placeHolder: "Enter new slice name (optional, empty = keep current)"})
+        let new_slice = await vscode.window.showQuickPick(items, {
+            placeHolder: "Target slice name (Esc to keep current)",
+            canPickMany: false,
+        })
         if (!new_slice) new_slice = ''
 
         for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
