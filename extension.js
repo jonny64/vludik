@@ -73,30 +73,37 @@ function activate(context) {
         open_view('Html');
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', function () {
+    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function () {
 
         let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
         let type =  view_file.name
         let root = project_path (view_file.dir)
 
-        vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"}).then(new_type => {
+        let new_type = await vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"})
 
-            if (!new_type) return;
+        if (!new_type) return
 
-            for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
+        let new_slice = await vscode.window.showInputBox({prompt: "Slice: ", placeHolder: "Enter new slice name (optional, empty = keep current)"})
+        if (!new_slice) new_slice = ''
 
-                let view_dir = view_path (view)
-                let ext = view == 'Html'? 'html' : 'js'
-                let copy_from = guess_file_path (path.join(root, view_dir), type, ext)
-                if (!fs.existsSync (copy_from)) continue
+        for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
 
-                let copy_to = path.join (path.dirname (copy_from), new_type + '.' + ext)
-                if (fs.existsSync (copy_to)) continue
+            let view_dir = view_path (view)
+            let ext = view == 'Html'? 'html' : 'js'
+            let copy_from = guess_file_path (path.join(root, view_dir), type, ext)
+            if (!fs.existsSync (copy_from)) continue
 
-                fs.copyFileSync (copy_from, copy_to)
-                replace_in_file (copy_to, type, new_type, () => open_file (copy_to))
+            let copy_to = path.join (path.dirname (copy_from), new_type + '.' + ext)
+            if (new_slice) {
+                let slices = path.dirname (root)
+                view_dir = path.dirname (copy_from).split (root)[1]
+                copy_to = path.join (slices, new_slice, view_dir, new_type + '.' + ext)
             }
-        });
+            if (fs.existsSync (copy_to)) continue
+
+            fs.copyFileSync (copy_from, copy_to)
+            replace_in_file (copy_to, type, new_type, () => open_file (copy_to))
+        }
     }));
 
     function replace_in_file (file_path, from, to, callback) {
