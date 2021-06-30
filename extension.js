@@ -87,10 +87,10 @@ function activate(context) {
 
                 let view_dir = view_path (view)
                 let ext = view == 'Html'? 'html' : 'js'
-                let copy_from = path.join(root, view_dir, type + '.' + ext)
+                let copy_from = guess_file_path (path.join(root, view_dir), type, ext)
                 if (!fs.existsSync (copy_from)) continue
 
-                let copy_to = path.join(root, view_dir, new_type + '.' + ext)
+                let copy_to = path.join (path.dirname (copy_from), new_type + '.' + ext)
                 if (fs.existsSync (copy_to)) continue
 
                 fs.copyFileSync (copy_from, copy_to)
