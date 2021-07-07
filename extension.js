@@ -148,7 +148,12 @@ function activate(context) {
 
         let file_path = ''
 
-        for (prefix of ['', 'oltp', 'dw']) {
+        let prefixes = ['']
+        if (/\bModel\b/.test (view_path)) {
+            prefixes = prefixes.concat (['oltp', 'dw'])
+        }
+
+        for (prefix of prefixes) {
 
             file_path = path.join(view_path, file_name + '.' + ext);
             console.log (file_path)
@@ -178,15 +183,42 @@ function activate(context) {
         return file_path
     }
 
-    function en_plural (word) {
-        return word + 's'
+    function remove_postfix (s) {
+
+        let postfixes = [
+            [/_roster$/,            ''],
+            [/_new$/,               ''],
+            [/_popup$/,             ''],
+            [/_common$/,            ''],
+            [/_vw$/,                ''],
+        ]
+
+        for (i = 0; i < postfixes.length; i++) {
+            var re = postfixes [i] [0]
+            if (!s.match (re)) continue
+            return s.replace (re, postfixes [i] [1])
+        }
+
+        return s
+
+    }
+
+    function en_plural (s) {
+
+        if (/s$/.test (s)) return s
+
+        s = remove_postfix (s)
+
+        return s + 's'
     }
 
     function en_unplural (s) {
 
         if (s.match (/(status|goods)$/)) return s
 
-        var table = [
+        s = remove_postfix (s)
+
+        let table = [
             [/tives$/,          'tive'],
             [/ives$/,            'ife'],
             [/ves$/,               'f'],
@@ -196,10 +228,6 @@ function activate(context) {
             [/eet(h?)$/,       'oot$1'],
             [/(o|ch|sh|ss|x)es$/, '$1'],
             [/s$/,                  ''],
-            [/_roster$/,            ''],
-            [/_new$/,               ''],
-            [/_popup$/,             ''],
-            [/_common$/,            ''],
         ]
 
         for (i = 0; i < table.length; i++) {
