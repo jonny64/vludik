@@ -6,7 +6,7 @@ function activate(context) {
 
     console.log('starting vludik');
 
-    function focusFunction (func) {
+    function focus_function (func) {
         let editor = vscode.window.activeTextEditor;
         let uri = vscode.Uri.file(editor.document.fileName);
         vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', uri).then(syms => {
@@ -35,42 +35,41 @@ function activate(context) {
         });
     }
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', function () {
-        open_view('Content').then(() => {
-            focusFunction ('select_' + type_name ())
-        });
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', async function () {
+        await open_view ('Content')
+        focus_function ('select_' + type_name ())
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_get_item', function () {
-        open_view('Content').then(() => {
-            focusFunction ('get_item_of_' + type_name ())
-        });
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_get_item', async function () {
+        await open_view ('Content')
+        focus_function ('get_item_of_' + type_name ())
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_data', function () {
-        open_view('Data').then(() => {
-            focusFunction (type_name ())
-        });
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_data', async function () {
+        await open_view ('Data')
+        focus_function (type_name ())
 	}));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw', function () {
-        open_view('View').then(() => {
-            focusFunction (type_name ())
-        });
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw', async function () {
+        let type = type_name ()
+        type = en_plural (type)
+        await open_view ('View', type)
+        focus_function (type)
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', function () {
-        open_view('View').then(() => {
-            focusFunction (type_name ())
-        });
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', async function () {
+        let type = type_name ()
+        type = en_unplural (type)
+        await open_view ('View', type)
+        focus_function (type)
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_model', function () {
-        open_view('Model');
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_model', async function () {
+        await open_view ('Model')
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_html', function () {
-        open_view('Html');
+    context.subscriptions.push(vscode.commands.registerCommand('extension.goto_html', async function () {
+        await open_view ('Html')
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function () {
@@ -130,12 +129,12 @@ function activate(context) {
         });
     }
 
-    async function open_view(view) {
+    async function open_view (view, type) {
         let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
         let view_dir = view_path (view);
         let root = project_path (view_file.dir)
         let ext = view == 'Html'? 'html' : 'js'
-        let file_path = guess_file_path (path.join(root, view_dir), view_file.name, ext)
+        let file_path = guess_file_path (path.join(root, view_dir), type || view_file.name, ext)
         return await open_file (file_path)
     }
 
@@ -159,19 +158,19 @@ function activate(context) {
             console.log (file_path)
             if (fs.existsSync(file_path)) break;
 
-            file_path = path.join(view_path, prefix, singular (file_name) + '.' + ext);
+            file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext);
             console.log (file_path)
             if (fs.existsSync(file_path)) break;
 
-            file_path = path.join(view_path, prefix, plural (file_name) + '.' + ext);
+            file_path = path.join(view_path, prefix, en_plural (file_name) + '.' + ext);
             console.log (file_path)
             if (fs.existsSync(file_path)) break;
 
-            file_path = path.join(view_path, prefix, singular (file_name) + '.' + ext);
+            file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext);
             console.log (file_path)
             if (fs.existsSync(file_path)) break;
 
-            file_path = path.join(view_path, prefix, plural (singular (file_name)) + '.' + ext);
+            file_path = path.join(view_path, prefix, en_plural (en_unplural (file_name)) + '.' + ext);
             console.log (file_path)
             if (fs.existsSync(file_path)) break;
         }
@@ -179,30 +178,38 @@ function activate(context) {
         return file_path
     }
 
-    function plural (word) {
+    function en_plural (word) {
         return word + 's'
     }
 
-    function singular (word) {
+    function en_unplural (s) {
 
-        const endings = {
-            ves: 'fe',
-            ies: 'y',
-            i: 'us',
-            zes: '',
-            ses: '',
-            es: '',
-            s: '',
-            _roster: '',
-            _new: '',
-            _popup: '',
-            _common: '',
-        };
+        if (s.match (/(status|goods)$/)) return s
 
-        return word.replace(
-            new RegExp(`(${Object.keys(endings).join('|')})$`),
-            suffix => endings[suffix]
-        );
+        var table = [
+            [/tives$/,          'tive'],
+            [/ives$/,            'ife'],
+            [/ves$/,               'f'],
+            [/ies$/,               'y'],
+            // [/ice$/,            'ouse'],
+            [/men$/,             'man'],
+            [/eet(h?)$/,       'oot$1'],
+            [/(o|ch|sh|ss|x)es$/, '$1'],
+            [/s$/,                  ''],
+            [/_roster$/,            ''],
+            [/_new$/,               ''],
+            [/_popup$/,             ''],
+            [/_common$/,            ''],
+        ]
+
+        for (i = 0; i < table.length; i++) {
+            var re = table [i] [0]
+            if (!s.match (re)) continue
+            return s.replace (re, table [i] [1])
+        }
+
+        return s
+
     }
 
     function open_file (file_path) {

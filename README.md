@@ -10,10 +10,10 @@
 	alt + s = select
 	alt + u = do_update
 	alt + c = do_create
-	alt + d = js/data
+	alt + d = js/data current type: item or roster
 	alt + m = js/view item
 	alt + w = js/view roster
-	alt + e = html
+	alt + e = html current type: item or roster
 
 	F5      = goto model and back to screen where we started
 	F12     = copy Content data view html Model to new screen: asks name of new screen
