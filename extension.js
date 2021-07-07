@@ -35,6 +35,10 @@ function activate(context) {
         });
     }
 
+    function is_model (p) {
+        return /\bModel\b/.test (p)
+    }
+
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', async function () {
         await open_view ('Content')
         focus_function ('select_' + type_name ())
@@ -65,7 +69,15 @@ function activate(context) {
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_model', async function () {
-        await open_view ('Model')
+        let type = type_name ()
+        type = en_plural (type)
+
+        let p = vscode.window.activeTextEditor.document.fileName
+        if (is_model (p) && !/_vw\.js/.test (p)) {
+            type = type + '_vw'
+        }
+
+        await open_view ('Model', type)
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_html', async function () {
@@ -135,7 +147,7 @@ function activate(context) {
         let root = project_path (view_file.dir)
         let ext = view == 'Html'? 'html' : 'js'
         let file_path = guess_file_path (path.join(root, view_dir), type || view_file.name, ext)
-        return await open_file (file_path)
+        return open_file (file_path)
     }
 
     async function open_file (file_path) {
@@ -149,7 +161,7 @@ function activate(context) {
         let file_path = ''
 
         let prefixes = ['']
-        if (/\bModel\b/.test (view_path)) {
+        if (is_model (view_path)) {
             prefixes = prefixes.concat (['oltp', 'dw'])
         }
 
@@ -205,9 +217,9 @@ function activate(context) {
 
     function en_plural (s) {
 
-        if (/s$/.test (s)) return s
-
         s = remove_postfix (s)
+
+        if (/s$/.test (s)) return s
 
         return s + 's'
     }
