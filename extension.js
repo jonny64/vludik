@@ -31,7 +31,7 @@ function activate(context) {
                 }
             }
 
-            console.log (func + ' not found!')
+            throw (func + ' not found!')
         });
     }
 
@@ -40,43 +40,67 @@ function activate(context) {
     }
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', async function () {
-        await open_view ('Content')
-        focus_function ('select_' + type_name ())
-    }));
+        try {
+            await open_view ('Content')
+            focus_function ('select_' + type_name ())
+        } catch (x) {
+            vscode.window.showInformationMessage ((x || {}).message || x)
+        }
+    }))
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_get_item', async function () {
-        await open_view ('Content')
-        focus_function ('get_item_of_' + type_name ())
-    }));
+        try {
+            await open_view ('Content')
+            focus_function ('get_item_of_' + type_name ())
+        } catch (x) {
+            vscode.window.showInformationMessage ((x || {}).message || x)
+        }
+    }))
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_data', async function () {
-        await open_view ('Data')
-        focus_function (type_name ())
-	}));
+        try {
+            await open_view ('Data')
+            focus_function (type_name ())
+        } catch (x) {
+            vscode.window.showInformationMessage ((x || {}).message || x)
+        }
+	}))
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw', async function () {
-        let type = type_name ()
-        await open_view ('View', type, 'roster')
-        focus_function (type)
+        try {
+            let type = type_name ()
+            await open_view ('View', type, 'roster')
+            focus_function (type)
+        } catch (x) {
+            vscode.window.showInformationMessage ((x || {}).message || x)
+        }
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', async function () {
-        let type = type_name ()
-        await open_view ('View', type, 'item')
-        focus_function (type)
-    }));
+        try {
+            let type = type_name ()
+            await open_view ('View', type, 'item')
+            focus_function (type)
+        } catch (x) {
+            vscode.window.showInformationMessage ((x || {}).message || x)
+        }
+    }))
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_model', async function () {
-        let type = type_name ()
-        type = en_plural (type)
+        try {
+            let type = type_name ()
+            type = en_plural (type)
 
-        let p = vscode.window.activeTextEditor.document.fileName
-        if (is_model (p) && !/_vw\.js/.test (p)) {
-            type = type + '_vw'
+            let p = vscode.window.activeTextEditor.document.fileName
+            if (is_model (p) && !/_vw\.js/.test (p)) {
+                type = type + '_vw'
+            }
+
+            await open_view ('Model', type)
+        } catch (x) {
+            vscode.window.showInformationMessage ((x || {}).message || x)
         }
-
-        await open_view ('Model', type)
-    }));
+    }))
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_html', async function () {
         await open_view ('Html')
@@ -141,10 +165,12 @@ function activate(context) {
 
     async function open_view (view, type, prefer) {
         let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
+        type = type || view_file.name
         let view_dir = view_path (view);
         let root = project_path (view_file.dir)
         let ext = view == 'Html'? 'html' : 'js'
-        let file_path = guess_file_path (path.join(root, view_dir), type || view_file.name, ext, prefer)
+        let file_path = guess_file_path (path.join(root, view_dir), type, ext, prefer)
+        if (!file_path) throw `${view}/${type} not found`
         return open_file (file_path)
     }
 
@@ -167,11 +193,11 @@ function activate(context) {
 
             file_path = path.join(view_path, file_name + '.' + ext);
             console.log (file_path)
-            if (fs.existsSync(file_path)) break;
+            if (fs.existsSync(file_path)) return file_path
 
             file_path = path.join(view_path, prefix, file_name + '.' + ext);
             console.log (file_path)
-            if (fs.existsSync(file_path)) break;
+            if (fs.existsSync(file_path)) return file_path
 
             switch (prefer) {
                 case 'roster':
@@ -187,14 +213,15 @@ function activate(context) {
 
             file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext);
             console.log (file_path)
-            if (fs.existsSync(file_path)) break;
+            if (fs.existsSync(file_path)) return file_path
 
             file_path = path.join(view_path, prefix, en_plural (en_unplural (file_name)) + '.' + ext);
             console.log (file_path)
-            if (fs.existsSync(file_path)) break;
+            if (fs.existsSync(file_path)) return file_path
+
         }
 
-        return file_path
+        return ''
     }
 
     function remove_postfix (s) {
