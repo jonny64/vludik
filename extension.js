@@ -56,15 +56,13 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw', async function () {
         let type = type_name ()
-        type = en_plural (type)
-        await open_view ('View', type)
+        await open_view ('View', type, 'roster')
         focus_function (type)
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', async function () {
         let type = type_name ()
-        type = en_unplural (type)
-        await open_view ('View', type)
+        await open_view ('View', type, 'item')
         focus_function (type)
     }));
 
@@ -141,12 +139,12 @@ function activate(context) {
         });
     }
 
-    async function open_view (view, type) {
+    async function open_view (view, type, prefer) {
         let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
         let view_dir = view_path (view);
         let root = project_path (view_file.dir)
         let ext = view == 'Html'? 'html' : 'js'
-        let file_path = guess_file_path (path.join(root, view_dir), type || view_file.name, ext)
+        let file_path = guess_file_path (path.join(root, view_dir), type || view_file.name, ext, prefer)
         return open_file (file_path)
     }
 
@@ -156,7 +154,7 @@ function activate(context) {
         console.log('opened ' + file_path);
     }
 
-    function guess_file_path (view_path, file_name, ext) {
+    function guess_file_path (view_path, file_name, ext, prefer) {
 
         let file_path = ''
 
@@ -175,13 +173,17 @@ function activate(context) {
             console.log (file_path)
             if (fs.existsSync(file_path)) break;
 
-            file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext);
-            console.log (file_path)
-            if (fs.existsSync(file_path)) break;
+            switch (prefer) {
+                case 'roster':
+                    file_path = path.join(view_path, prefix, en_plural (file_name) + '.' + ext)
+                    console.log (file_path)
+                    if (fs.existsSync(file_path)) return file_path
+                case 'item':
+                    file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext)
+                    console.log (file_path)
+                    if (fs.existsSync(file_path)) return file_path
+            }
 
-            file_path = path.join(view_path, prefix, en_plural (file_name) + '.' + ext);
-            console.log (file_path)
-            if (fs.existsSync(file_path)) break;
 
             file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext);
             console.log (file_path)
