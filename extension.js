@@ -21,13 +21,13 @@ function activate(context) {
                 for (c of i.children) {
                     if (c.name.startsWith(func)) {
                         console.log (c)
-                        return editor.revealRange(c.location.range)
+                        return editor.revealRange(c.location.range, 1)
                     }
                 }
 
                 if (i.name.startsWith(func)) {
                     console.log (i)
-                    return editor.revealRange(c.location.range)
+                    return editor.revealRange(i.location.range, 1)
                 }
             }
 
