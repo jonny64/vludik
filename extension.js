@@ -6,33 +6,30 @@ function activate(context) {
 
     console.log('starting vludik');
 
-    function focus_function (func) {
+    async function focus_function (func) {
         let editor = vscode.window.activeTextEditor;
         let uri = vscode.Uri.file(editor.document.fileName);
-        vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', uri).then(syms => {
-            console.log (syms)
-            if (!Array.isArray(syms)) {
-                return
-            }
+        let syms = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', uri)
+        console.log (syms)
+        if (!Array.isArray(syms)) {
+            return
+        }
 
-            let editor = vscode.window.activeTextEditor;
-
-            for (i of syms) {
-                for (c of i.children) {
-                    if (c.name.startsWith(func)) {
-                        console.log (c)
-                        return editor.revealRange(c.location.range, 1)
-                    }
-                }
-
-                if (i.name.startsWith(func)) {
-                    console.log (i)
-                    return editor.revealRange(i.location.range, 1)
+        for (i of syms) {
+            for (c of i.children) {
+                if (c.name.startsWith(func)) {
+                    console.log (c)
+                    return editor.revealRange(c.location.range, 1)
                 }
             }
 
-            throw (func + ' not found!')
-        });
+            if (i.name.startsWith(func)) {
+                console.log (i)
+                return editor.revealRange(i.location.range, 1)
+            }
+        }
+
+        console.log (func + ' not found!')
     }
 
     function is_model (p) {
@@ -42,7 +39,7 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', async function () {
         try {
             await open_view ('Content')
-            focus_function ('select_' + type_name ())
+            await focus_function ('select_' + type_name ())
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
@@ -51,7 +48,7 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_get_item', async function () {
         try {
             await open_view ('Content')
-            focus_function ('get_item_of_' + type_name ())
+            await focus_function ('get_item_of_' + type_name ())
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
@@ -60,7 +57,7 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_data', async function () {
         try {
             await open_view ('Data')
-            focus_function (type_name ())
+            await focus_function (type_name ())
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
@@ -70,7 +67,7 @@ function activate(context) {
         try {
             let type = type_name ()
             await open_view ('View', type, 'roster')
-            focus_function (type)
+            await focus_function (type)
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
@@ -80,7 +77,7 @@ function activate(context) {
         try {
             let type = type_name ()
             await open_view ('View', type, 'item')
-            focus_function (type)
+            await focus_function (type)
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
@@ -177,12 +174,12 @@ function activate(context) {
         let root = project_path (view_file.dir)
         let file_path = guess_file_path (path.join(root, view_dir), type, prefer)
         if (!file_path) throw `${view}/${type} not found`
-        return open_file (file_path)
+        await open_file (file_path)
     }
 
     async function open_file (file_path) {
         let doc = await vscode.workspace.openTextDocument(file_path)
-        let editor = await vscode.window.showTextDocument(doc);
+        await vscode.window.showTextDocument(doc)
         console.log('opened ' + file_path);
     }
 
