@@ -200,14 +200,6 @@ function activate(context) {
         for (ext of exts) {
             for (prefix of prefixes) {
 
-                file_path = path.join(view_path, file_name + '.' + ext);
-                console.log (file_path)
-                if (fs.existsSync(file_path)) return file_path
-
-                file_path = path.join(view_path, prefix, file_name + '.' + ext);
-                console.log (file_path)
-                if (fs.existsSync(file_path)) return file_path
-
                 switch (prefer) {
                     case 'roster':
                         file_path = path.join(view_path, prefix, en_plural (file_name) + '.' + ext)
@@ -219,6 +211,13 @@ function activate(context) {
                         if (fs.existsSync(file_path)) return file_path
                 }
 
+                file_path = path.join(view_path, file_name + '.' + ext);
+                console.log (file_path)
+                if (fs.existsSync(file_path)) return file_path
+
+                file_path = path.join(view_path, prefix, file_name + '.' + ext);
+                console.log (file_path)
+                if (fs.existsSync(file_path)) return file_path
 
                 file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext);
                 console.log (file_path)
