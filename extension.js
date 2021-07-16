@@ -128,10 +128,10 @@ function activate(context) {
             for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
 
                 let view_dir = view_path (view)
-                let ext = view == 'Html'? 'html' : 'js'
-                let copy_from = guess_file_path (path.join(root, view_dir), type, ext)
+                let copy_from = guess_file_path (path.join(root, view_dir), type)
                 if (!fs.existsSync (copy_from)) continue
 
+                let ext = path.extname (copy_from)
                 let copy_to = path.join (path.dirname (copy_from), new_type + '.' + ext)
                 if (new_slice) {
                     view_dir = path.dirname (copy_from).split (root)[1]
@@ -175,8 +175,7 @@ function activate(context) {
         type = type || view_file.name
         let view_dir = view_path (view);
         let root = project_path (view_file.dir)
-        let ext = view == 'Html'? 'html' : 'js'
-        let file_path = guess_file_path (path.join(root, view_dir), type, ext, prefer)
+        let file_path = guess_file_path (path.join(root, view_dir), type, prefer)
         if (!file_path) throw `${view}/${type} not found`
         return open_file (file_path)
     }
@@ -187,7 +186,7 @@ function activate(context) {
         console.log('opened ' + file_path);
     }
 
-    function guess_file_path (view_path, file_name, ext, prefer) {
+    function guess_file_path (view_path, file_name, prefer) {
 
         let file_path = ''
 
@@ -196,36 +195,40 @@ function activate(context) {
             prefixes = prefixes.concat (['oltp', 'dw'])
         }
 
-        for (prefix of prefixes) {
+        let exts = ['js', 'html', 'pm']
 
-            file_path = path.join(view_path, file_name + '.' + ext);
-            console.log (file_path)
-            if (fs.existsSync(file_path)) return file_path
+        for (ext of exts) {
+            for (prefix of prefixes) {
 
-            file_path = path.join(view_path, prefix, file_name + '.' + ext);
-            console.log (file_path)
-            if (fs.existsSync(file_path)) return file_path
+                file_path = path.join(view_path, file_name + '.' + ext);
+                console.log (file_path)
+                if (fs.existsSync(file_path)) return file_path
 
-            switch (prefer) {
-                case 'roster':
-                    file_path = path.join(view_path, prefix, en_plural (file_name) + '.' + ext)
-                    console.log (file_path)
-                    if (fs.existsSync(file_path)) return file_path
-                case 'item':
-                    file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext)
-                    console.log (file_path)
-                    if (fs.existsSync(file_path)) return file_path
+                file_path = path.join(view_path, prefix, file_name + '.' + ext);
+                console.log (file_path)
+                if (fs.existsSync(file_path)) return file_path
+
+                switch (prefer) {
+                    case 'roster':
+                        file_path = path.join(view_path, prefix, en_plural (file_name) + '.' + ext)
+                        console.log (file_path)
+                        if (fs.existsSync(file_path)) return file_path
+                    case 'item':
+                        file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext)
+                        console.log (file_path)
+                        if (fs.existsSync(file_path)) return file_path
+                }
+
+
+                file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext);
+                console.log (file_path)
+                if (fs.existsSync(file_path)) return file_path
+
+                file_path = path.join(view_path, prefix, en_plural (en_unplural (file_name)) + '.' + ext);
+                console.log (file_path)
+                if (fs.existsSync(file_path)) return file_path
+
             }
-
-
-            file_path = path.join(view_path, prefix, en_unplural (file_name) + '.' + ext);
-            console.log (file_path)
-            if (fs.existsSync(file_path)) return file_path
-
-            file_path = path.join(view_path, prefix, en_plural (en_unplural (file_name)) + '.' + ext);
-            console.log (file_path)
-            if (fs.existsSync(file_path)) return file_path
-
         }
 
         return ''
