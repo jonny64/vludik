@@ -113,14 +113,8 @@ function activate(context) {
             let new_type = await vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"})
 
             if (!new_type) return
-            let slices_dir = /slices/.test (root)? path.dirname (root) : path.join (root, 'slices')
-            let items = fs.readdirSync (slices_dir)
 
-            let new_slice = await vscode.window.showQuickPick(items, {
-                placeHolder: "Target slice name (Esc to keep current)",
-                canPickMany: false,
-            })
-            if (!new_slice) new_slice = ''
+            let slice_path = await ask_new_slice (root)
 
             for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
 
@@ -130,9 +124,9 @@ function activate(context) {
 
                 let ext = path.extname (copy_from)
                 let copy_to = path.join (path.dirname (copy_from), new_type + ext)
-                if (new_slice) {
+                if (slice_path) {
                     view_dir = path.dirname (copy_from).split (root)[1]
-                    copy_to = path.join (slices_dir, new_slice, view_dir, new_type + ext)
+                    copy_to = path.join (slice_path, view_dir, new_type + ext)
                 }
                 if (fs.existsSync (copy_to)) continue
 
@@ -147,6 +141,24 @@ function activate(context) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
     }));
+
+    async function ask_new_slice (root) {
+
+        let slices_dir = /slices/.test (root)? path.dirname (root) : path.join (root, 'slices')
+
+        if (!fs.existsSync (slices_dir)) return ''
+
+        let items = fs.readdirSync (slices_dir)
+
+        let new_slice = await vscode.window.showQuickPick(items, {
+            placeHolder: "Target slice name (Esc to keep current)",
+            canPickMany: false,
+        })
+
+        if (!new_slice) return ''
+
+        return path.join (slices_dir, new_slice)
+    }
 
     function replace_in_file (file_path, from, to, callback) {
 
