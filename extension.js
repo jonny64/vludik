@@ -331,6 +331,8 @@ function activate(context) {
         var file = path.parse(vscode.window.activeTextEditor.document.fileName);
         return file.name;
     }
+
+    console.log ('vludik started')
 }
 
 exports.activate = activate;
