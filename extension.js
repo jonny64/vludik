@@ -103,14 +103,14 @@ function activate(context) {
         await open_view ('Html')
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function () {
+    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function (o) {
 
         try {
             let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
             let type =  view_file.name
             let root = project_path (view_file.dir)
 
-            let new_type = await vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"})
+            let new_type = o.new_type || await vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"})
 
             if (!new_type) return
             let slices_dir = /slices/.test (root)? path.dirname (root) : path.join (root, 'slices')
