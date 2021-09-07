@@ -52,6 +52,6 @@ suite ('Copy type Test Suite', () => {
 			const to_be = path.join(__dirname, workspace_dir.no_slices, p)
 			assert (fs.existsSync (to_be), `should exist ${to_be}`)
 		}
-	})
+	}).timeout(30000)
 
 })
