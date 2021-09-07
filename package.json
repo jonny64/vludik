@@ -1,9 +1,9 @@
 {
     "name": "vludik",
-    "version": "0.2.10",
+    "version": "0.3",
     "publisher": "jonny64",
     "engines": {
-        "vscode": "^1.20.0"
+        "vscode": "^1.32.0"
     },
     "description": "navigation hotkeys for dia.js framework (http://github.com/do-/dia.js/wiki)",
     "repository": {
