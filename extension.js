@@ -110,8 +110,7 @@ function activate(context) {
             let type =  view_file.name
             let root = project_path (view_file.dir)
 
-            let new_type = o.new_type || await vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"})
-
+            let new_type = o? o.new_type : await vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"})
             if (!new_type) return
 
             let slice_path = await ask_new_slice (root)
