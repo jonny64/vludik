@@ -1,4 +1,7 @@
 on:
+  pull_request:
+    branches: 
+      -master
   push:
     branches:
       - master
@@ -25,15 +28,3 @@ jobs:
           uses: GabrielBB/xvfb-action@v1.0
           with:
             run: npm test
-  deploy:
-    name: Deploy
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: npm install
-      - uses: lannonbr/vsce-action@master
-        with:
-          args: "publish -p $VSCE_TOKEN"
-        env:
-          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
