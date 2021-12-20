@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - master
-name: Deploy Extension
+name: test
 jobs:
   test_e2e:
       name: test:e2e
