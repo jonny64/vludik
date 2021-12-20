@@ -1,10 +1,12 @@
 on:
   pull_request:
-    branches: 
-      -master
+    paths:
+      - '*.js'
   push:
     branches:
       - master
+    paths:
+      - '*.js'
 name: test
 jobs:
   test_e2e:
