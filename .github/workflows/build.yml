@@ -7,8 +7,8 @@ on:
       - master
 name: Deploy Extension
 jobs:
-  test:
-      name: Test
+  test_e2e:
+      name: test:e2e
       strategy:
         matrix:
           os: [windows-latest]
