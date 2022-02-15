@@ -45,11 +45,16 @@ module.exports = {
 
         let slice_path = await ask_new_slice (root)
 
+        let created_files = []
+
         for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
 
             let view_dir = view_path (view)
             let copy_from = guess_file_path (path.join(root, view_dir), type)
-            if (!fs.existsSync (copy_from)) continue
+            if (!fs.existsSync (copy_from)) {
+                console.log (`${copy_from} does not exist, skipping...`)
+                continue
+            }
 
             let ext = path.extname (copy_from)
             let copy_to = path.join (path.dirname (copy_from), new_type + ext)
@@ -57,15 +62,26 @@ module.exports = {
                 view_dir = path.dirname (copy_from).split (root)[1]
                 copy_to = path.join (slice_path, view_dir, new_type + ext)
             }
-            if (fs.existsSync (copy_to)) continue
+            if (fs.existsSync (copy_to)) {
+                console.log (`${copy_to} already exists, skipping...`)
+                continue
+            }
 
             let copy_to_dir = path.dirname (copy_to)
             if (!fs.existsSync (copy_to_dir)) {
                 fs.mkdirSync(copy_to_dir, { recursive: true })
             }
+
+            console.log (`copy ${copy_from} -> ${copy_to}`)
             fs.copyFileSync (copy_from, copy_to)
+
+            console.log (`replace in ${copy_to}: ${type} -> ${new_type}`)
             replace_in_file (copy_to, type, new_type)
-            await open_file (copy_to)
+
+            created_files.push (copy_to)
         }
+
+        let open_files = created_files.map (i => open_file (i))
+        await Promise.all (open_files)
     }
 }

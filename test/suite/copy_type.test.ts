@@ -38,10 +38,11 @@ suite ('Copy type Test Suite', () => {
 
 	it ('should copy type in project WITHOUT slices', async () => {
 
-		let folder = vscode.Uri.file (workspace_dir.no_slices)
+		let project_path = path.join(__dirname, workspace_dir.no_slices)
+		let folder = vscode.Uri.file (project_path)
 		await vscode.commands.executeCommand('vscode.openFolder', folder)
 
-		const as_is = path.join(__dirname, workspace_dir.no_slices, src_path)
+		const as_is = path.join(project_path, src_path)
 		const uri = vscode.Uri.file (as_is)
 
 		let doc = await vscode.workspace.openTextDocument(uri)
