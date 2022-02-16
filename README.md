@@ -1,3 +1,7 @@
+[![](https://vsmarketplacebadge.apphb.com/version-short/jonny64.vludik.svg)](https://marketplace.visualstudio.com/items?itemName=jonny64.vludik)
+[![](https://vsmarketplacebadge.apphb.com/downloads-short/jonny64.vludik.svg)](https://marketplace.visualstudio.com/items?itemName=jonny64.vludik)
+[![](https://vsmarketplacebadge.apphb.com/rating-short/jonny64.vludik.svg)](https://marketplace.visualstudio.com/items?itemName=jonny64.vludik)
+
 # vludik README
 
     navigation hotkeys for dia.js framework (https://github.com/do-/dia.js/wiki)
