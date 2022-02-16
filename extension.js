@@ -1,10 +1,10 @@
-const vscode = require('vscode');
-const path = require("path");
+const vscode = require('vscode')
+const path = require("path")
 
-const {open_view, focus_function, type_name} = require ('./lib/ui')
+const {open_view, is_model} = require ('./lib/path')
+const {focus_function, type_name, open_file} = require ('./lib/ui')
 const {en_plural} = require ('./lib/plural')
 const {copy_type} = require('./commands/copy_type')
-const {is_model} = require ('./lib/path')
 
 function activate(context) {
 
@@ -12,7 +12,9 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', async function () {
         try {
-            await open_view ('Content')
+            let file_path = vscode.window.activeTextEditor.document.fileName
+            let file_path_new = await open_view ('Content', file_path)
+            await open_file (file_path_new)
             await focus_function ('select_' + type_name ())
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
@@ -21,7 +23,9 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_get_item', async function () {
         try {
-            await open_view ('Content')
+            let file_path = vscode.window.activeTextEditor.document.fileName
+            let file_path_new = await open_view ('Content', file_path)
+            await open_file (file_path_new)
             await focus_function ('get_item_of_' + type_name ())
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
@@ -30,17 +34,20 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_data', async function () {
         try {
-            await open_view ('Data')
+            let file_path = vscode.window.activeTextEditor.document.fileName
+            let file_path_new = await open_view ('Data', file_path)
+            await open_file (file_path_new)
             await focus_function (type_name ())
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
-	}))
+    }))
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw', async function () {
         try {
-            let type = type_name ()
-            await open_view ('View', type, 'roster')
+            let file_path = vscode.window.activeTextEditor.document.fileName
+            let file_path_new = await open_view ('View', file_path, 'roster')
+            await open_file (file_path_new)
             await focus_function (type)
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
@@ -49,8 +56,8 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', async function () {
         try {
-            let type = type_name ()
-            await open_view ('View', type, 'item')
+            let file_path = vscode.window.activeTextEditor.document.fileName
+            await open_view ('View', file_path, 'item')
             await focus_function (type)
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
@@ -62,19 +69,31 @@ function activate(context) {
             let type = type_name ()
             type = en_plural (type)
 
-            let p = vscode.window.activeTextEditor.document.fileName
-            if (is_model (p) && !/_vw\.js/.test (p)) {
-                type = type + '_vw'
+            let file_path = vscode.window.activeTextEditor.document.fileName
+            let file = path.parse(file_path)
+            let file_path_new
+            if (is_model (file_path)) {
+                let is_vw = /_vw$/.test (file.name)
+                if (is_vw) {
+                    file_path_new = path.join(file.dir, file.name.replace (/_vw$/, '') + file.ext)
+                } else {
+                    file_path_new = path.join(file.dir, file.name + '_vw' + file.ext)
+                }
+            } else {
+                file_path_new = await open_view ('Model', file_path)
             }
 
-            await open_view ('Model', type)
+            await open_file (file_path_new)
+
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
     }))
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_html', async function () {
-        await open_view ('Html')
+        let file_path = vscode.window.activeTextEditor.document.fileName
+        let file_path_new = await open_view ('Html', file_path)
+        await open_file (file_path_new)
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function (o) {

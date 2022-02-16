@@ -3,7 +3,7 @@ const path = require("path")
 const fs = require("fs")
 const {project_path, view_path} = require ('../lib/path')
 const {open_file} = require ('../lib/ui')
-const {guess_file_path} = require ('../lib/guess')
+const {guess_file_path} = require ('../lib/path')
 
 async function ask_new_slice (root) {
 
