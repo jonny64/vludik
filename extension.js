@@ -3,6 +3,7 @@ const path = require("path");
 
 const {open_file} = require ('./lib/ui')
 const {guess_file_path} = require ('./lib/guess')
+const {en_plural} = require ('./lib/plural')
 const {copy_type} = require('./commands/copy_type')
 const {project_path, view_path, is_model} = require ('./lib/path')
 
