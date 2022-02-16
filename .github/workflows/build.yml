@@ -11,8 +11,8 @@ on:
       - '**.yml'
 name: test
 jobs:
-  test_e2e:
-      name: test:e2e
+  test:
+      name: test
       strategy:
         matrix:
           os: [windows-latest]
