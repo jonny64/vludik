@@ -1,41 +1,14 @@
 const vscode = require('vscode');
 const path = require("path");
 
-const {open_file} = require ('./lib/ui')
-const {guess_file_path} = require ('./lib/guess')
+const {open_view, focus_function, type_name} = require ('./lib/ui')
 const {en_plural} = require ('./lib/plural')
 const {copy_type} = require('./commands/copy_type')
-const {project_path, view_path, is_model} = require ('./lib/path')
+const {is_model} = require ('./lib/path')
 
 function activate(context) {
 
     console.log('starting vludik');
-
-    async function focus_function (func) {
-        let editor = vscode.window.activeTextEditor;
-        let uri = vscode.Uri.file(editor.document.fileName);
-        let syms = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', uri)
-        console.log (syms)
-        if (!Array.isArray(syms)) {
-            return
-        }
-
-        for (i of syms) {
-            for (c of i.children) {
-                if (c.name.startsWith(func)) {
-                    console.log (c)
-                    return editor.revealRange(c.location.range, 3)
-                }
-            }
-
-            if (i.name.startsWith(func)) {
-                console.log (i)
-                return editor.revealRange(i.location.range, 3)
-            }
-        }
-
-        console.log (func + ' not found!')
-    }
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', async function () {
         try {
@@ -111,22 +84,6 @@ function activate(context) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
     }))
-
-    async function open_view (view, type, prefer) {
-        let view_file = path.parse(vscode.window.activeTextEditor.document.fileName);
-        type = type || view_file.name
-        let view_dir = view_path (view);
-        let root = project_path (view_file.dir)
-        let file_path = guess_file_path (path.join(root, view_dir), type, prefer)
-        if (!file_path) throw `${view}/${type} not found`
-        await open_file (file_path)
-    }
-
-
-    function type_name () {
-        var file = path.parse(vscode.window.activeTextEditor.document.fileName);
-        return file.name;
-    }
 
     console.log ('vludik started')
 }
