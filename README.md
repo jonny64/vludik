@@ -1,5 +1,3 @@
-[![Deploy Extension](https://github.com/jonny64/vludik/actions/workflows/publish.yml/badge.svg)](https://github.com/jonny64/vludik/actions/workflows/publish.yml)
-
 # vludik README
 
     navigation hotkeys for dia.js framework (https://github.com/do-/dia.js/wiki)
