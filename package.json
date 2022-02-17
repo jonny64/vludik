@@ -1,6 +1,6 @@
 {
     "name": "vludik",
-    "version": "0.3.4",
+    "version": "1.0.0",
     "publisher": "jonny64",
     "engines": {
         "vscode": "^1.32.0"
@@ -121,22 +121,18 @@
         ]
     },
     "scripts": {
-        "compile": "tsc -p ./",
-        "lint": "eslint . --ext .ts,.tsx",
-        "watch": "tsc -watch -p ./",
-        "e2e": "npm run compile && node ./out/runTest.js",
-        "test": "jest",
-        "test_ci": "npm run test && npm run e2e"
+        "compile": "tsc -p ./e2e --rootDir ./e2e",
+        "watch": "tsc -watch -p ./e2e --rootDir ./e2e",
+        "e2e": "npm run compile && node ./e2e/out/runTest.js",
+        "test": "jest --ci",
+        "test_ci": "npm test && npm run e2e"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
         "@types/mocha": "^5.2.6",
         "@types/node": "^12.12.0",
         "@types/vscode": "^1.32.0",
-        "@typescript-eslint/eslint-plugin": "^4.16.0",
-        "@typescript-eslint/parser": "^4.16.0",
         "@vscode/test-electron": "^1.6.1",
-        "eslint": "^7.21.0",
         "glob": "^7.1.4",
         "jest": "^27.5.1",
         "mocha": "^6.1.4",
@@ -144,9 +140,9 @@
         "typescript": "^4.2.2"
     },
     "jest": {
-        "testPathIgnorePatterns" : [
-            "test/e2e",
-            "out"
+        "testPathIgnorePatterns": [
+            "e2e"
         ]
-    }
+    },
+    "dependencies": {}
 }

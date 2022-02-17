@@ -1,3 +1,7 @@
 node_modules
 .vscode-test/
+e2e/out
+e2e/**/*.js
+e2e/**/*.js.map
+e2e/projects
 *.vsix

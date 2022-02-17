@@ -1,4 +1,4 @@
-const {make_from_to} = require ('../../../commands/copy_type')
+const {make_from_to} = require ('../../commands/copy_type')
 
 const fs = require ('fs')
 jest.mock('fs')

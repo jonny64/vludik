@@ -5,7 +5,7 @@ import * as fs from 'fs'
 import * as vscode from 'vscode'
 
 const workspace_dir = {
-	no_slices   :  '../../test/workspaces/elu_dia_slick_template',
+	no_slices   :  '../../projects/elu_dia_slick_template',
 }
 
 const src_path = 'back/lib/Content/users.js'
@@ -40,6 +40,7 @@ suite ('Copy type Test Suite', () => {
 
 		let project_path = path.join(__dirname, workspace_dir.no_slices)
 		let folder = vscode.Uri.file (project_path)
+
 		await vscode.commands.executeCommand('vscode.openFolder', folder)
 
 		const as_is = path.join(project_path, src_path)
@@ -50,7 +51,7 @@ suite ('Copy type Test Suite', () => {
 		await vscode.commands.executeCommand ('extension.copy_type', {
 			type      : 'users',
 			new_type  : 'users_copy',
-			root      : workspace_dir.no_slices,
+			root      : project_path,
 		})
 
 		for (let p of dst_path) {

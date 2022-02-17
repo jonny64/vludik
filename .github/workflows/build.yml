@@ -2,12 +2,14 @@ on:
   pull_request:
     paths:
       - '**.js'
+      - '**.ts'
       - '**.yml'
   push:
     branches:
       - master
     paths:
       - '**.js'
+      - '**.ts'
       - '**.yml'
 name: test
 jobs:
