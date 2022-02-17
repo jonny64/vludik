@@ -1,26 +1,37 @@
-const vscode = require('vscode')
 const path = require("path")
 const fs = require("fs")
-const {project_path, view_path} = require ('../lib/path')
-const {open_file} = require ('../lib/ui')
+const {view_path} = require ('../lib/path')
 const {guess_file_path} = require ('../lib/path')
 
-async function ask_new_slice (root) {
 
-	let slices_dir = /slices/.test (root)? path.dirname (root) : path.join (root, 'slices')
+const make_from_to = function (o) {
 
-	if (!fs.existsSync (slices_dir)) return ''
+	let {root, slice_path, type, new_type} = o
 
-	let items = fs.readdirSync (slices_dir)
+	let todo = []
 
-	let new_slice = await vscode.window.showQuickPick(items, {
-		placeHolder: "Target slice name (Esc to keep current)",
-		canPickMany: false,
-	})
+	for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
 
-	if (!new_slice) return ''
+		let view_dir = view_path (view)
+		let copy_from = guess_file_path (path.join(root, view_dir), type)
+		if (!fs.existsSync (copy_from)) {
+			continue
+		}
 
-	return path.join (slices_dir, new_slice)
+		let ext = path.extname (copy_from)
+		let copy_to = path.join (path.dirname (copy_from), new_type + ext)
+		if (slice_path) {
+			view_dir = path.dirname (copy_from).split (root)[1]
+			copy_to = path.join (slice_path, view_dir, new_type + ext)
+		}
+		if (fs.existsSync (copy_to)) {
+			continue
+		}
+
+		todo.push ([copy_from, copy_to])
+	}
+
+	return todo
 }
 
 function replace_in_file (file_path, from, to, callback) {
@@ -34,38 +45,17 @@ function replace_in_file (file_path, from, to, callback) {
 
 module.exports = {
 
+	make_from_to,
+
 	copy_type: async function (o) {
 
-		let view_file = path.parse(vscode.window.activeTextEditor.document.fileName)
-		let type =  view_file.name
-		let root = project_path (view_file.dir)
+		let {type, new_type} = o
 
-		let new_type = o? o.new_type : await vscode.window.showInputBox({prompt: "Copy to: ", placeHolder: "Enter new type name"})
-		if (!new_type) return
-
-		let slice_path = await ask_new_slice (root)
+		let todo = make_from_to (o)
 
 		let created_files = []
 
-		for (let view of ['Model', 'Content', 'Data', 'View', 'Html']) {
-
-			let view_dir = view_path (view)
-			let copy_from = guess_file_path (path.join(root, view_dir), type)
-			if (!fs.existsSync (copy_from)) {
-				console.log (`${copy_from} does not exist, skipping...`)
-				continue
-			}
-
-			let ext = path.extname (copy_from)
-			let copy_to = path.join (path.dirname (copy_from), new_type + ext)
-			if (slice_path) {
-				view_dir = path.dirname (copy_from).split (root)[1]
-				copy_to = path.join (slice_path, view_dir, new_type + ext)
-			}
-			if (fs.existsSync (copy_to)) {
-				console.log (`${copy_to} already exists, skipping...`)
-				continue
-			}
+		for (let [copy_from, copy_to] of todo) {
 
 			let copy_to_dir = path.dirname (copy_to)
 			if (!fs.existsSync (copy_to_dir)) {
@@ -81,7 +71,6 @@ module.exports = {
 			created_files.push (copy_to)
 		}
 
-		let open_files = created_files.map (i => open_file (i))
-		await Promise.all (open_files)
+		return created_files
 	}
 }
