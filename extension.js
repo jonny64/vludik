@@ -4,7 +4,9 @@ const path = require("path")
 const {open_view, is_model} = require ('./lib/path')
 const {focus_function, type_name, open_file} = require ('./lib/ui')
 const {en_plural} = require ('./lib/plural')
+
 const {copy_type} = require('./commands/copy_type')
+const {goto_select} = require('./commands/goto_select')
 
 function activate(context) {
 
@@ -12,10 +14,7 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_select', async function () {
         try {
-            let file_path = vscode.window.activeTextEditor.document.fileName
-            let file_path_new = await open_view ('Content', file_path)
-            await open_file (file_path_new)
-            await focus_function ('select_' + type_name ())
+            goto_select ()
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
