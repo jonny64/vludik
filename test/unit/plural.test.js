@@ -21,5 +21,5 @@ test ('en_plural ignore voc_cfo', () => {
 })
 
 test ('en_unplural ignore popup', () => {
-	expect(en_unplural('voc_budget_art_popup')).toBe('voc_budget_art_popup')
+	expect(en_unplural('voc_budget_art_popup')).toBe('voc_budget_art_popup') 
 })
