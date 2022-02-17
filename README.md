@@ -22,13 +22,13 @@ This [vscode](https://code.visualstudio.com/download) plugin adds: navigation ho
 
 ## Building
 
-| command                                              | meaning
+| to do                                                | run
 | ----                                                 | ---
-| run all tests (including e2e)                        | npm test
-| run all unit tests                                   | npx jest
-| run single test by name tag                          | npx jest
+| run all tests (including e2e)                        | npm test && npm run e2e
+| run all unit tests                                   | npm test
+| run single unit test by name tag                     | npx jest -t 'popup'
 | run e2e tests                                        | npm run e2e
-| npm install -g vsce && vsce package                  | builds *.vsix package
+| build *.vsix package                                 | vsce package (npm install -g vsce first)
 
 Debug in vscode:
 * open vludik folder

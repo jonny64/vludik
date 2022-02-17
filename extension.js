@@ -1,6 +1,8 @@
 const vscode = require('vscode')
 
+const {ask_new_type, open_file} = require ('./lib/ui')
 const {copy_type}      = require('./commands/copy_type')
+
 const {goto_select  }  = require('./commands/goto_select')
 const {goto_get_item}  = require('./commands/goto_get_item')
 const {goto_data}      = require('./commands/goto_data')
@@ -69,9 +71,20 @@ const activate = function (context) {
         }
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function (o) {
+    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function (options) {
         try {
-            copy_type (o)
+
+            let o = options && options.new_type? options : await ask_new_type ()
+
+            if (!o.new_type) {
+                console.log (`copy_type no input, skipping`)
+                return
+            }
+
+            let created_files = await copy_type (o)
+            let open_files = created_files.map (i => open_file (i))
+            await Promise.all (open_files)
+
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }

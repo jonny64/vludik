@@ -47,7 +47,11 @@ suite ('Copy type Test Suite', () => {
 
 		let doc = await vscode.workspace.openTextDocument(uri)
 		await vscode.window.showTextDocument(doc)
-		await vscode.commands.executeCommand ('extension.copy_type', {new_type: 'users_copy'})
+		await vscode.commands.executeCommand ('extension.copy_type', {
+			type      : 'users',
+			new_type  : 'users_copy',
+			root      : workspace_dir.no_slices,
+		})
 
 		for (let p of dst_path) {
 			const to_be = path.join(__dirname, workspace_dir.no_slices, p)
