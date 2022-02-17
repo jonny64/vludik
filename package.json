@@ -125,8 +125,8 @@
         "lint": "eslint . --ext .ts,.tsx",
         "watch": "tsc -watch -p ./e2e --rootDir ./e2e",
         "e2e": "npm run compile && node ./e2e/out/runTest.js",
-        "test": "jest",
-        "test_ci": "npm run test && npm run e2e"
+        "test": "jest --ci",
+        "test_ci": "npm test && npm run e2e"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
@@ -144,9 +144,6 @@
         "typescript": "^4.2.2"
     },
     "jest": {
-        "testPathIgnorePatterns" : [
-            "test/e2e",
-            "out"
-        ]
+        "testPathIgnorePatterns": [ "e2e" ]
     }
 }
