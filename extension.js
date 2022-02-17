@@ -48,7 +48,7 @@ function activate(context) {
             let file_path = vscode.window.activeTextEditor.document.fileName
             let file_path_new = await open_view ('View', file_path, 'roster')
             await open_file (file_path_new)
-            await focus_function (type)
+            await focus_function (type_name ())
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
@@ -57,8 +57,9 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', async function () {
         try {
             let file_path = vscode.window.activeTextEditor.document.fileName
-            await open_view ('View', file_path, 'item')
-            await focus_function (type)
+            let file_path_new = await open_view ('View', file_path, 'item')
+            await open_file (file_path_new)
+            await focus_function (type_name ())
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
