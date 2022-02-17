@@ -2,9 +2,7 @@
 [![](https://vsmarketplacebadge.apphb.com/downloads-short/jonny64.vludik.svg)](https://marketplace.visualstudio.com/items?itemName=jonny64.vludik)
 [![](https://vsmarketplacebadge.apphb.com/rating-short/jonny64.vludik.svg)](https://marketplace.visualstudio.com/items?itemName=jonny64.vludik)
 
-# vludik README
-
-    navigation hotkeys for dia.js framework (https://github.com/do-/dia.js/wiki)
+This [vscode](https://code.visualstudio.com/download) plugin adds: navigation hotkeys for [dia.js](https://github.com/do-/dia.js/wiki) framework
 
 ## Features
 
@@ -23,10 +21,19 @@
 	F12     = copy Content data view html Model to new screen: asks name of new screen
 
 ## Building
-	npm install -g vsce
-	vsce package
 
-builds [*.vsix](https://github.com/jonny64/vludik/releases) package
+| command                                              | meaning
+| ----                                                 | ---
+| run all tests (including e2e)                        | npm test
+| run all unit tests                                   | npx jest
+| run single test by name tag                          | npx jest
+| run e2e tests                                        | npm run e2e
+| npm install -g vsce && vsce package                  | builds *.vsix package
+
+Debug in vscode:
+* open vludik folder
+* run - Start debugging
+* set breakpoints, etc.
 
 ## Installation
 * `Ctrl Shift P` - `Install extensions` - search `vludik` in marketplace
