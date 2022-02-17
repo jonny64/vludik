@@ -51,7 +51,7 @@ suite ('Copy type Test Suite', () => {
 		await vscode.commands.executeCommand ('extension.copy_type', {
 			type      : 'users',
 			new_type  : 'users_copy',
-			root      : workspace_dir.no_slices,
+			root      : project_path,
 		})
 
 		for (let p of dst_path) {
