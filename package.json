@@ -125,7 +125,8 @@
         "lint": "eslint . --ext .ts,.tsx",
         "watch": "tsc -watch -p ./",
         "e2e": "npm run compile && node ./out/runTest.js",
-        "test": "jest --ci"
+        "test": "jest",
+        "test_ci": "npm run test && npm run e2e"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
