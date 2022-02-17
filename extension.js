@@ -71,10 +71,15 @@ const activate = function (context) {
         }
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function (o) {
+    context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function (options) {
         try {
-            let o = await ask_new_type ()
-            if (!o.new_type) return
+
+            let o = options && options.new_type? options : await ask_new_type ()
+
+            if (!o.new_type) {
+                console.log (`copy_type no input, skipping`)
+                return
+            }
 
             let created_files = await copy_type (o)
             let open_files = created_files.map (i => open_file (i))
