@@ -5,7 +5,7 @@ import * as fs from 'fs'
 import * as vscode from 'vscode'
 
 const workspace_dir = {
-	no_slices   :  '../projects/elu_dia_slick_template',
+	no_slices   :  '../../projects/elu_dia_slick_template',
 }
 
 const src_path = 'back/lib/Content/users.js'
