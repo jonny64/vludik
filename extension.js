@@ -11,6 +11,7 @@ const {goto_get_item} = require('./commands/goto_get_item')
 const {goto_data} = require('./commands/goto_data')
 const {goto_draw} = require('./commands/goto_draw')
 const {goto_draw_item} = require('./commands/goto_draw_item')
+const {goto_html} = require('./commands/goto_html')
 
 function activate(context) {
 
@@ -83,9 +84,11 @@ function activate(context) {
     }))
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_html', async function () {
-        let file_path = vscode.window.activeTextEditor.document.fileName
-        let file_path_new = await open_view ('Html', file_path)
-        await open_file (file_path_new)
+        try {
+            goto_html ()
+        } catch (x) {
+            vscode.window.showInformationMessage ((x || {}).message || x)
+        }
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.copy_type', async function (o) {
