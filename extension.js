@@ -7,6 +7,7 @@ const {en_plural} = require ('./lib/plural')
 
 const {copy_type} = require('./commands/copy_type')
 const {goto_select} = require('./commands/goto_select')
+const {goto_get_item} = require('./commands/goto_get_item')
 
 function activate(context) {
 
@@ -22,10 +23,7 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_get_item', async function () {
         try {
-            let file_path = vscode.window.activeTextEditor.document.fileName
-            let file_path_new = await open_view ('Content', file_path)
-            await open_file (file_path_new)
-            await focus_function ('get_item_of_' + type_name ())
+            goto_get_item ()
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
