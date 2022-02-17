@@ -10,6 +10,7 @@ const {goto_select} = require('./commands/goto_select')
 const {goto_get_item} = require('./commands/goto_get_item')
 const {goto_data} = require('./commands/goto_data')
 const {goto_draw} = require('./commands/goto_draw')
+const {goto_draw_item} = require('./commands/goto_draw_item')
 
 function activate(context) {
 
@@ -49,10 +50,7 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand('extension.goto_draw_item', async function () {
         try {
-            let file_path = vscode.window.activeTextEditor.document.fileName
-            let file_path_new = await open_view ('View', file_path, 'item')
-            await open_file (file_path_new)
-            await focus_function (type_name ())
+            goto_draw_item ()
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
         }
