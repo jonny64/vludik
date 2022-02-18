@@ -34,7 +34,7 @@ const make_from_to = function (o) {
 	return todo
 }
 
-function replace_in_file (file_path, from, to, callback) {
+function replace_in_file (file_path, from, to) {
 
 	let data = fs.readFileSync (file_path, 'utf8')
 

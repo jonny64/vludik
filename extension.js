@@ -82,8 +82,10 @@ const activate = function (context) {
             }
 
             let created_files = await copy_type (o)
-            let open_files = created_files.map (i => open_file (i))
-            await Promise.all (open_files)
+
+            for (let f of created_files) {
+                await open_file (f)
+            }
 
         } catch (x) {
             vscode.window.showInformationMessage ((x || {}).message || x)
