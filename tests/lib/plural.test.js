@@ -20,6 +20,10 @@ test ('en_plural ignore voc_cfo', () => {
 	expect(en_plural ('voc_cfo')).toBe('voc_cfo')
 })
 
+test ('en_plural ignore voc_okei', () => {
+	expect(en_plural ('voc_okei')).toBe('voc_okei')
+})
+
 test ('en_unplural ignore popup', () => {
 	expect(en_unplural('voc_budget_art_popup')).toBe('voc_budget_art_popup') 
 })
