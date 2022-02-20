@@ -10,8 +10,6 @@ This [vscode](https://code.visualstudio.com/download) plugin adds: navigation ho
 
 	alt + g = get_item
 	alt + s = select
-	alt + u = do_update
-	alt + c = do_create
 	alt + d = js/data current type: item or roster
 	alt + m = js/view item
 	alt + w = js/view roster
@@ -22,7 +20,7 @@ This [vscode](https://code.visualstudio.com/download) plugin adds: navigation ho
 
 ## Building
 
-| to do                                                | run
+| to                                                   | run
 | ----                                                 | ---
 | run all tests (including e2e)                        | npm test && npm run e2e
 | run all unit tests                                   | npm test
