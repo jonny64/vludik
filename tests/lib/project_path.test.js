@@ -17,3 +17,8 @@ test ('project path from view', () => {
 	let to_be = `p:\\projects\\mil\\slices\\budget`
 	expect(as_is).toBe(to_be)
 })
+
+test ('project path error', () => {
+	let as_is = () => project_path (`p:\\projects\\mil`)
+	expect(as_is).toThrowError('cant find project path')
+})
