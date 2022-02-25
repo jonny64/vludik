@@ -1,12 +1,11 @@
 on:
   workflow_dispatch:
     
-name: publish
+name: publish:pre-release
 jobs:
   publish:
-    name: publish
+    name: publish:pre-release
     runs-on: ubuntu-latest
-    inputs:
     steps:
       - uses: actions/checkout@v2
       - run: npm install
