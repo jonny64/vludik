@@ -112,6 +112,10 @@
         "snippets": [
             {
                 "language": "javascript",
+                "path": "./snippets/content.json"
+            },
+            {
+                "language": "javascript",
                 "path": "./snippets/model.json"
             },
             {

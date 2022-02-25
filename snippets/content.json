@@ -1,0 +1,47 @@
+{
+	"get_part_of": {
+		"prefix": "get_",
+		"body": [
+			"\r",
+			"////////////////////////////////////////////////////////////////////////////////",
+			"",
+			"get_list_of_${TM_FILENAME_BASE}:",
+			"",
+			"\tasync function () {",
+			"",
+			"\t\tlet {db, rq} = this, {type} = rq",
+			"",
+			"\t\trq.sort = rq.sort || [",
+			"\t\t\t{field: \"label\", direction: \"asc\"},",
+			"\t\t]",
+			"",
+			"\t\tlet filter = this.w2ui_filter ()",
+			"",
+			"\t\tlet ${TM_FILENAME_BASE} = await db.list ({[type + '_vw']: filter})",
+			"",
+			"\t\treturn {${TM_FILENAME_BASE}}",
+			"\t},",
+			"\r"
+		],
+		"description": "get_part_of"
+	},
+	"do_action": {
+		"prefix": "do_",
+		"body": [
+			"\r",
+			"////////////////////////////////////////////////////////////////////////////////\r",
+			"\r",
+			"do_${1:recalc}_${TM_FILENAME_BASE}:\r",
+			"\r",
+			"\tasync function () {\r",
+			"\r",
+			"\t\tlet {db, rq} = this, {type, data} = rq",
+			"\r",
+			"\t\treturn db.update ('${TM_FILENAME_BASE}', data)\r",
+			"\r",
+			"\t},",
+			"\r"
+		],
+		"description": "do_action"
+	}
+}
