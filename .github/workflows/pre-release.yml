@@ -1,0 +1,17 @@
+on:
+  workflow_dispatch:
+    
+name: publish
+jobs:
+  publish:
+    name: publish
+    runs-on: ubuntu-latest
+    inputs:
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - uses: lannonbr/vsce-action@master
+        with:
+          args: "publish -p $VSCE_TOKEN --pre-release"
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}

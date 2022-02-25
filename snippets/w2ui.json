@@ -1,0 +1,21 @@
+{
+	"w2ui:search": {
+		"prefix": "search:",
+		"body": [
+			"search: [",
+			"  ${2}",
+			"],",
+			"searchLogic : 'AND',",
+			"limit       : ${1:1},",
+			"offset      : 0,"
+		],
+		"description": "w2ui:field"
+	},
+	"w2ui:field": {
+		"prefix": "field",
+		"body": [
+			"{field: '${1:uuid_}', value: ${2:data.uuid_}, operator: '${3|is,less,more,in,not in,null|}'},"
+		],
+		"description": "w2ui:field"
+	}
+}

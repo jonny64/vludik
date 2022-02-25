@@ -1,6 +1,6 @@
 {
     "name": "vludik",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "jonny64",
     "engines": {
         "vscode": "^1.32.0"
@@ -113,6 +113,10 @@
             {
                 "language": "javascript",
                 "path": "./snippets/model.json"
+            },
+            {
+                "language": "javascript",
+                "path": "./snippets/w2ui.json"
             },
             {
                 "language": "xml",
