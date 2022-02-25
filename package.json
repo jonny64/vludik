@@ -3,7 +3,7 @@
     "version": "1.0.1",
     "publisher": "jonny64",
     "engines": {
-        "vscode": "^1.32.0"
+        "vscode": "^1.63.0"
     },
     "description": "navigation hotkeys for dia.js framework (http://github.com/do-/dia.js/wiki)",
     "repository": {
@@ -135,7 +135,7 @@
         "@types/glob": "^7.1.1",
         "@types/mocha": "^5.2.6",
         "@types/node": "^12.12.0",
-        "@types/vscode": "^1.32.0",
+        "@types/vscode": "^1.63.0",
         "@vscode/test-electron": "^1.6.1",
         "glob": "^7.1.4",
         "jest": "^27.5.1",
