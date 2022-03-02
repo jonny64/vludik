@@ -15,7 +15,7 @@ This [vscode](https://code.visualstudio.com/download) plugin adds: navigation ho
 	alt + w = js/view roster
 	alt + e = html current type: item or roster
 
-	F5      = goto model and back to screen where we started
+	F5      = goto type model, switch to type_vw if already model
 	F12     = copy Content data view html Model to new screen: asks name of new screen
 
 ## Building
