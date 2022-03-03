@@ -17,9 +17,8 @@
 			"",
 			"\t\tlet filter = this.w2ui_filter ()",
 			"",
-			"\t\tlet ${TM_FILENAME_BASE} = await db.list ({[type + '_vw']: filter})",
+			"\t\treturn db.list ({'${TM_FILENAME_BASE}_vw': filter})",
 			"",
-			"\t\treturn {${TM_FILENAME_BASE}}",
 			"\t},",
 			"\r"
 		],
