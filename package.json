@@ -1,6 +1,6 @@
 {
     "name": "vludik",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "publisher": "jonny64",
     "engines": {
         "vscode": "^1.63.0"
