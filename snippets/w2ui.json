@@ -17,5 +17,12 @@
 			"{field: '${1:uuid_}', value: ${2:data.uuid_}, operator: '${3|is,less,more,in,not in,null|}'},"
 		],
 		"description": "w2ui:field"
+	},
+	"w2ui:formatter": {
+		"prefix": "formatter",
+		"body": [
+			"formatter: (_, c, v, col, r) => ${1:v},"
+		],
+		"description": "w2grid columns formatter"
 	}
 }
