@@ -70,3 +70,28 @@ test ('copy_type popup with slice', async () => {
 
 	expect(as_is).toEqual(to_be)
 })
+
+test ('copy_type popup slice to root', async () => {
+
+	let app = `front\\root\\_\\app`
+	let slice_path_target = root
+
+	mock_fs ({
+		[`${slice_root}\\back\\lib\\Content\\voc_budget_arts.js`]: 1,
+		[`${slice_root}\\back\\lib\\Model\\oltp\\voc_budget_arts.js`]: 1,
+		[`${slice_root}\\${app}\\js\\data\\voc_budget_art_popup.js`]: 1,
+		[`${slice_root}\\${app}\\js\\view\\voc_budget_art_popup.js`]: 1,
+		[`${slice_root}\\${app}\\html\\voc_budget_art_popup.html`]: 1,
+		[`${slice_path_target}\\back\\lib\\Model\\oltp\\voc_cfo_arts.js`]: 1,
+	})
+
+	let as_is = await make_from_to ({root: slice_root, slice_path: slice_path_target, type: 'voc_budget_arts', new_type: 'voc_cfo_arts'})
+	let to_be = [
+		[
+			`${slice_root}\\back\\lib\\Content\\voc_budget_arts.js`,
+			`${slice_path_target}\\back\\lib\\Content\\voc_cfo_arts.js`,
+		],
+	]
+
+	expect(as_is).toEqual(to_be)
+})
