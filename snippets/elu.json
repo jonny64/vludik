@@ -1,0 +1,16 @@
+{
+	"elu:response:search": {
+		"prefix": "response",
+		"body": [
+			"await response ({type: '${1:tb_}', id: ${2:null}}, {${3:}})"
+		],
+		"description": "elu.js response roster"
+	},
+	"elu:response:part": {
+		"prefix": "response",
+		"body": [
+			"await response ({type: '${1:tb_}', part: '${2:vocs}'})"
+		],
+		"description": "elu.js response part"
+	},
+}
