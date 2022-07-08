@@ -8,14 +8,12 @@ const make_from_to = function (o) {
 
 	let {root, slice_path, type, new_type} = o
 
-	let is_ui_src = /(roster|popup)/.test (type)
-
 	let view_types = [
 		{name: 'Model'},
 		{name: 'Content'},
-		{name: 'Data', is_ui: 1},
-		{name: 'View', is_ui: 1},
-		{name: 'Html', is_ui: 1},
+		{name: 'Data'},
+		{name: 'View'},
+		{name: 'Html'},
 	]
 
 	let todo = []
@@ -24,10 +22,7 @@ const make_from_to = function (o) {
 
 		let view_dir = view_path (view.name)
 
-		if (is_ui_src && !view.is_ui) continue
-
-		let prefer = view.is_ui? 'plural_same' : ''
-		let copy_from = guess_file_path (path.join(root, view_dir), type, prefer)
+		let copy_from = guess_file_path (path.join(root, view_dir), type)
 
 		if (!fs.existsSync (copy_from)) {
 			continue
