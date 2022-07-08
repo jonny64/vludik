@@ -134,7 +134,6 @@
         "watch": "tsc -watch -p ./e2e --rootDir ./e2e",
         "e2e": "npm run compile && node ./e2e/out/runTest.js",
         "test": "jest --coverage --ci",
-        "test_ci": "npm test && npm run e2e",
         "package": "vsce package"
     },
     "devDependencies": {

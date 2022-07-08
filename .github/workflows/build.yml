@@ -30,7 +30,9 @@ jobs:
             node-version: 12
         - name: Install dependencies
           run: npm install
+        - name: Run unit test
+          run: npm run test
         - name: Run headless test
           uses: GabrielBB/xvfb-action@v1.0
           with:
-            run: npm run test_ci
+            run: npm run e2e
