@@ -8,16 +8,26 @@ const make_from_to = function (o) {
 
 	let {root, slice_path, type, new_type} = o
 
-	let is_ui = /(roster|popup)/.test (type)
+	let is_ui_src = /(roster|popup)/.test (type)
 
-	let view_types = (is_ui? [] : ['Model', 'Content']).concat (['Data', 'View', 'Html'])
+	let view_types = [
+		{name: 'Model'},
+		{name: 'Content'},
+		{name: 'Data', is_ui: 1},
+		{name: 'View', is_ui: 1},
+		{name: 'Html', is_ui: 1},
+	]
 
 	let todo = []
 
 	for (let view of view_types) {
 
-		let view_dir = view_path (view)
-		let copy_from = guess_file_path (path.join(root, view_dir), type)
+		let view_dir = view_path (view.name)
+
+		if (is_ui_src && !view.is_ui) continue
+
+		let prefer = view.is_ui? 'plural_same' : ''
+		let copy_from = guess_file_path (path.join(root, view_dir), type, prefer)
 
 		if (!fs.existsSync (copy_from)) {
 			continue
