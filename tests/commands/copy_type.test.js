@@ -133,3 +133,47 @@ test ('#4 copy_type popup to popup no slice', async () => {
 
 	expect(as_is).toEqual(to_be)
 })
+
+test ('#5 copy_type subroster to subroster no html no slice', async () => {
+
+	let app = `${root}\\front\\root\\_\\app\\`
+	let back = `${root}\\back\\`
+
+	mock_fs ({
+		[`${back}lib\\Content\\tb_rental_ctr_intrs.js`]: 1,
+		[`${back}lib\\Model\\oltp\\tb_rental_ctr_intrs.js`]: 1,
+		[`${app}js\\data\\tb_rental_ctr_intrs.js`]: 1,
+		[`${app}js\\view\\tb_rental_ctr_intrs.js`]: 1,
+		[`${app}js\\data\\tb_rental_ctr_intr.js`]: 1,
+		[`${app}js\\view\\tb_rental_ctr_intr.js`]: 1,
+		[`${app}html\\tb_rental_ctr_intr.html`]: 1,
+	})
+
+	let as_is = await make_from_to ({
+		root       : root,
+		slice_path : '',
+		type       : 'tb_rental_ctr_intrs',
+		new_type   : 'tb_lease_ctr_intrs',
+	})
+
+	let to_be = [
+		[
+			`${back}lib\\Model\\oltp\\tb_rental_ctr_intrs.js`,
+			`${back}lib\\Model\\oltp\\tb_lease_ctr_intrs.js`,
+		],
+		[
+			`${back}lib\\Content\\tb_rental_ctr_intrs.js`,
+			`${back}lib\\Content\\tb_lease_ctr_intrs.js`,
+		],
+		[
+			`${app}js\\data\\tb_rental_ctr_intrs.js`,
+			`${app}js\\data\\tb_lease_ctr_intrs.js`
+		],
+		[
+			`${app}js\\view\\tb_rental_ctr_intrs.js`,
+			`${app}js\\view\\tb_lease_ctr_intrs.js`
+		],
+	]
+
+	expect(as_is).toEqual(to_be)
+})
