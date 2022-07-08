@@ -23,7 +23,7 @@ module.exports = {
 				file_path_new = path.join(file.dir, file.name + '_vw' + file.ext)
 			}
 		} else {
-			file_path_new = await open_view ('Model', file_path, 'roster')
+			file_path_new = await open_view ('Model', file_path, 'roster') 
 		}
 
 		await open_file (file_path_new)

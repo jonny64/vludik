@@ -30,7 +30,7 @@ test ('#2 view_path Html popup -> Model', async () => {
 		[p_from]: 1,
 		[p_to]: 1,
 	})
-	expect(await open_view ('Model', p_from)).toBe(p_to)
+	expect(await open_view ('Model', p_from, 'roster')).toBe(p_to)
 })
 
 test ('#3 view_path Html popup -> Model special voc_okei', async () => {
@@ -40,7 +40,7 @@ test ('#3 view_path Html popup -> Model special voc_okei', async () => {
 		[p_from]: 1,
 		[p_to]: 1,
 	})
-	expect(await open_view ('Model', p_from)).toBe(p_to)
+	expect(await open_view ('Model', p_from, 'roster')).toBe(p_to)
 })
 
 test ('#4 view_path Html popup -> View', async () => {

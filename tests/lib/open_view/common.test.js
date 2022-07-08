@@ -25,7 +25,7 @@ test ('#1 view_path Content -> Content', async () => {
 test ('#2 view_path Model -> Model', async () => {
 	let p = `${root}back\\lib\\Model\\oltp\\voc_cfo.js`
 	mock_fs ({[p]: 1})
-	let as_is = await open_view ('Model', p)
+	let as_is = await open_view ('Model', p, 'roster')
 	let to_be = p
 	expect(as_is).toBe(to_be)
 })
