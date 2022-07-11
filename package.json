@@ -3,6 +3,7 @@
     "version": "1.0.6",
     "publisher": "jonny64",
     "engines": {
+        "node": ">=14.17.3",
         "vscode": "^1.63.0"
     },
     "description": "navigation hotkeys for dia.js framework (http://github.com/do-/dia.js/wiki)",
@@ -133,7 +134,7 @@
         "watch": "tsc -watch -p ./e2e --rootDir ./e2e",
         "e2e": "npm run compile && node ./e2e/out/runTest.js",
         "test": "jest --coverage --ci",
-        "test_ci": "npm test && npm run e2e"
+        "package": "vsce package"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",

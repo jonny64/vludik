@@ -13,7 +13,7 @@ const mock_fs = f => {
 	})
 }
 
-test ('view_path Content -> View popup', async () => {
+test ('#1 view_path Content -> View popup', async () => {
 	let p_from = `${root}back\\lib\\Content\\voc_budget_arts.js`
 	let p_to   = `${root}front\\root\\_\\app\\js\\view\\voc_budget_art_popup.js`
 	mock_fs ({
@@ -23,27 +23,27 @@ test ('view_path Content -> View popup', async () => {
 	expect(await open_view ('View', p_from, 'item')).toBe(p_to)
 })
 
-test ('view_path Html popup -> Model', async () => {
+test ('#2 view_path Html popup -> Model', async () => {
 	let p_from = `${root}front\\root\\_\\app\\html\\voc_budget_art_popup.html`
 	let p_to   = `${root}back\\lib\\Model\\oltp\\voc_budget_arts.js`
 	mock_fs ({
 		[p_from]: 1,
 		[p_to]: 1,
 	})
-	expect(await open_view ('Model', p_from)).toBe(p_to)
+	expect(await open_view ('Model', p_from, 'roster')).toBe(p_to)
 })
 
-test ('view_path Html popup -> Model special voc_okei', async () => {
+test ('#3 view_path Html popup -> Model special voc_okei', async () => {
 	let p_from = `${root}front\\root\\_\\app\\html\\voc_okei_popup.html`
 	let p_to   = `${root}back\\lib\\Model\\oltp\\voc_okei.js`
 	mock_fs ({
 		[p_from]: 1,
 		[p_to]: 1,
 	})
-	expect(await open_view ('Model', p_from)).toBe(p_to)
+	expect(await open_view ('Model', p_from, 'roster')).toBe(p_to)
 })
 
-test ('view_path Html popup -> View', async () => {
+test ('#4 view_path Html popup -> View', async () => {
 	let p_from = `${root}front\\root\\_\\app\\html\\voc_budget_art_popup.html`
 	let p_to   = `${root}front\\root\\_\\app\\js\\view\\voc_budget_art_popup.js`
 	mock_fs ({
