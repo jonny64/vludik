@@ -8,7 +8,7 @@ module.exports = {
 
 		let file_path = vscode.window.activeTextEditor.document.fileName
 
-		let file_path_new = await open_view ('Content', file_path)
+		let file_path_new = await open_view ('Content', file_path, 'item')
 
 		await open_file (file_path_new)
 

@@ -40,7 +40,7 @@ test ('#3 view_path Content -> Html', async () => {
 	expect(await open_view ('Html', p_from)).toBe(p_to)
 })
 
-test ('#4 view_path Data -> Content', async () => {
+test ('#4 view_path Data -> Content goto_select', async () => {
 	let p_from = `${root}front\\root\\_\\app\\js\\data\\voc_cfo.js`
 	let p_to   = `${root}back\\lib\\Content\\voc_cfo.js`
 	mock_fs ({
@@ -63,4 +63,24 @@ test ('#5 view_path View -> Data', async () => {
 	})
 
 	expect(await open_view ('Data', p_from)).toBe(p_to)
+})
+
+test ('#6 view_path Data -> Content goto_get_item', async () => {
+	let p_from = `${root}front\\root\\_\\app\\js\\data\\voc_warehouse.js`
+	let p_to   = `${root}back\\lib\\Content\\voc_warehouses.js`
+	mock_fs ({
+		[p_from]: 1,
+		[p_to]: 1,
+	})
+	expect(await open_view ('Content', p_from, 'item')).toBe(p_to)
+})
+
+test ('#7 view_path Data -> Content goto_select', async () => {
+	let p_from = `${root}front\\root\\_\\app\\js\\data\\voc_warehouse.js`
+	let p_to   = `${root}back\\lib\\Content\\voc_warehouses.js`
+	mock_fs ({
+		[p_from]: 1,
+		[p_to]: 1,
+	})
+	expect(await open_view ('Content', p_from, 'roster')).toBe(p_to)
 })
