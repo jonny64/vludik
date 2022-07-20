@@ -24,5 +24,12 @@
 			"formatter: (_, c, v, col, r) => ${1:v},"
 		],
 		"description": "w2grid columns formatter"
+	},
+	"w2:filter_not_deleted": {
+		"prefix": "w2",
+		"body": [
+			"w2.filter_not_deleted"
+		],
+		"description": "w2 not deleted"
 	}
 }
