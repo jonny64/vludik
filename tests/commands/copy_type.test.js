@@ -2,19 +2,18 @@ const {make_from_to} = require ('../../commands/copy_type')
 
 const fs = require ('fs')
 jest.mock('fs')
-const root = `p:\\mil`
-const slice_root = `p:\\mil\\slices\\budget`
+const root = `p:\\app`
+const slice_root = `p:\\app\\slices\\budget`
 
 const mock_fs = f => {
 	let files = f
 	fs.existsSync.mockImplementation ((file_path) => {
 		let is_ok = files [file_path]? true : false
-		// console.log (`fs mock existsSync ${file_path} returned=${is_ok}`)
 		return is_ok
 	})
 }
 
-test ('#1 copy_type popup no slice', async () => {
+test ('copy_type popup no slice', async () => {
 
 	let app = `${slice_root}\\front\\root\\_\\app\\`
 	let back = `${slice_root}\\back`
@@ -46,7 +45,7 @@ test ('#1 copy_type popup no slice', async () => {
 	expect(as_is).toEqual(to_be)
 })
 
-test ('#2 copy_type popup with slice', async () => {
+test ('copy_type popup with slice', async () => {
 
 	let app = `front\\root\\_\\app`
 	let slice_path_target = `${root}\\slices\\vocs`
@@ -71,7 +70,7 @@ test ('#2 copy_type popup with slice', async () => {
 	expect(as_is).toEqual(to_be)
 })
 
-test ('#3 copy_type popup slice to root', async () => {
+test ('copy_type popup slice to root', async () => {
 
 	let app = `front\\root\\_\\app`
 	let slice_path_target = root
@@ -96,7 +95,7 @@ test ('#3 copy_type popup slice to root', async () => {
 	expect(as_is).toEqual(to_be)
 })
 
-test ('#4 copy_type popup to popup no slice', async () => {
+test ('copy_type popup to popup no slice', async () => {
 
 	let app = `${root}\\front\\root\\_\\app\\`
 	let back = `${root}\\back\\`
@@ -134,7 +133,7 @@ test ('#4 copy_type popup to popup no slice', async () => {
 	expect(as_is).toEqual(to_be)
 })
 
-test ('#5 copy_type subroster to subroster no html no slice', async () => {
+test ('copy_type subroster to subroster no html no slice', async () => {
 
 	let app = `${root}\\front\\root\\_\\app\\`
 	let back = `${root}\\back\\`
@@ -178,7 +177,7 @@ test ('#5 copy_type subroster to subroster no html no slice', async () => {
 	expect(as_is).toEqual(to_be)
 })
 
-test ('#6 copy_type item to item no Model Content no slice', async () => {
+test ('copy_type item to item no Model Content no slice', async () => {
 
 	let app = `${root}\\front\\root\\_\\app\\`
 	let back = `${root}\\back\\`

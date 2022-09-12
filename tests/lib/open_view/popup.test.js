@@ -2,18 +2,17 @@ const {open_view} = require ('../../../lib/path')
 
 const fs = require ('fs')
 jest.mock('fs')
-const root = `p:\\projects\\mil\\slices\\budget\\`
+const root = `p:\\projects\\app\\slices\\budget\\`
 
 const mock_fs = f => {
 	let files = f
 	fs.existsSync.mockImplementation ((file_path) => {
 		let is_ok = files [file_path]? true : false
-		// console.log (`fs mock existsSync ${file_path} returned=${is_ok}`)
 		return is_ok
 	})
 }
 
-test ('#1 view_path Content -> View popup', async () => {
+test ('view_path Content -> View popup', async () => {
 	let p_from = `${root}back\\lib\\Content\\voc_budget_arts.js`
 	let p_to   = `${root}front\\root\\_\\app\\js\\view\\voc_budget_art_popup.js`
 	mock_fs ({
@@ -23,7 +22,7 @@ test ('#1 view_path Content -> View popup', async () => {
 	expect(await open_view ('View', p_from, 'item')).toBe(p_to)
 })
 
-test ('#2 view_path Html popup -> Model', async () => {
+test ('view_path Html popup -> Model', async () => {
 	let p_from = `${root}front\\root\\_\\app\\html\\voc_budget_art_popup.html`
 	let p_to   = `${root}back\\lib\\Model\\oltp\\voc_budget_arts.js`
 	mock_fs ({
@@ -33,7 +32,7 @@ test ('#2 view_path Html popup -> Model', async () => {
 	expect(await open_view ('Model', p_from, 'roster')).toBe(p_to)
 })
 
-test ('#3 view_path Html popup -> Model special voc_okei', async () => {
+test ('view_path Html popup -> Model special voc_okei', async () => {
 	let p_from = `${root}front\\root\\_\\app\\html\\voc_okei_popup.html`
 	let p_to   = `${root}back\\lib\\Model\\oltp\\voc_okei.js`
 	mock_fs ({
@@ -43,7 +42,7 @@ test ('#3 view_path Html popup -> Model special voc_okei', async () => {
 	expect(await open_view ('Model', p_from, 'roster')).toBe(p_to)
 })
 
-test ('#4 view_path Html popup -> View', async () => {
+test ('view_path Html popup -> View', async () => {
 	let p_from = `${root}front\\root\\_\\app\\html\\voc_budget_art_popup.html`
 	let p_to   = `${root}front\\root\\_\\app\\js\\view\\voc_budget_art_popup.js`
 	mock_fs ({
