@@ -4,6 +4,7 @@ on:
       - '**.js'
       - '**.ts'
       - '**.yml'
+      - 'package.json'
   push:
     branches:
       - master
@@ -11,6 +12,7 @@ on:
       - '**.js'
       - '**.ts'
       - '**.yml'
+      - 'package.json'
 name: test
 jobs:
   test:
