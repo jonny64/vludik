@@ -5,6 +5,7 @@ on:
       - '**.ts'
       - '**.yml'
       - 'package.json'
+      - 'package-lock.json'
   push:
     branches:
       - master
