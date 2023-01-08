@@ -32,7 +32,7 @@ jobs:
           with:
             node-version: 12
         - name: Install dependencies
-          run: npm install
+          run: npm ci
         - name: Run unit test
           run: npm run test
         - name: Run headless test
