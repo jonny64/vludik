@@ -1,6 +1,6 @@
 {
     "name": "vludik",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "publisher": "jonny64",
     "engines": {
         "node": ">=14.17.3",
