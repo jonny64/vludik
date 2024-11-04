@@ -13,7 +13,7 @@ async function main() {
 		const extensionTestsPath = path.resolve(__dirname, './index');
 
 		// Download VS Code, unzip it and run the integration test
-		const vscodeExecutablePath = await downloadAndUnzipVSCode('1.93.1');
+		const vscodeExecutablePath = await downloadAndUnzipVSCode('1.82.3');
 		await runTests({ extensionDevelopmentPath, extensionTestsPath, vscodeExecutablePath });
 	} catch (err) {
 		console.log ({err})
