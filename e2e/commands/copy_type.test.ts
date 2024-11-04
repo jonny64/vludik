@@ -5,7 +5,7 @@ import * as fs from 'fs'
 import * as vscode from 'vscode'
 
 const workspace_dir = {
-	no_slices   :  '../../projects/elu_dia_slick_template',
+	no_slices   : path.resolve(__dirname, '../../projects/elu_dia_slick_template')
 }
 
 const src_path = 'back/lib/Content/users.js'
@@ -24,7 +24,7 @@ suite ('Copy type Test Suite', () => {
 
 		for (let p of dst_path) {
 			for (let root of [workspace_dir.no_slices]) {
-				let copy_path = path.join(__dirname, root, p)
+				let copy_path = path.join(root, p)
 				console.log({copy_path})
 				if (fs.existsSync (copy_path)) {
 					console.log (`rm ${copy_path}`)
@@ -38,16 +38,19 @@ suite ('Copy type Test Suite', () => {
 
 	it ('should copy type in project WITHOUT slices', async () => {
 
-		let project_path = path.join(__dirname, workspace_dir.no_slices)
+		let project_path = path.join(workspace_dir.no_slices)
 		let folder = vscode.Uri.file (project_path)
 
 		await vscode.commands.executeCommand('vscode.openFolder', folder)
 
 		const as_is = path.join(project_path, src_path)
-		const uri = vscode.Uri.file (as_is)
+		if (!fs.existsSync(as_is)) {
+			throw new Error(`Test file does not exist at path: ${as_is}`);
+		}
 
-		let doc = await vscode.workspace.openTextDocument(uri)
-		await vscode.window.showTextDocument(doc)
+		const uri = vscode.Uri.file (as_is)
+		const doc = await vscode.workspace.openTextDocument(uri)
+		const editor = vscode.window.showTextDocument(doc, {preview: false})
 		await vscode.commands.executeCommand ('extension.copy_type', {
 			type      : 'users',
 			new_type  : 'users_copy',
@@ -55,7 +58,7 @@ suite ('Copy type Test Suite', () => {
 		})
 
 		for (let p of dst_path) {
-			const to_be = path.join(__dirname, workspace_dir.no_slices, p)
+			const to_be = path.join(workspace_dir.no_slices, p)
 			assert (fs.existsSync (to_be), `should exist ${to_be}`)
 		}
 	}).timeout(30000)
