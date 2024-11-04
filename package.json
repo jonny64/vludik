@@ -4,7 +4,7 @@
     "publisher": "jonny64",
     "engines": {
         "node": ">=18.12.0",
-        "vscode": "^1.93.1"
+        "vscode": "^1.82.3"
     },
     "description": "navigation hotkeys for dia.js framework (http://github.com/do-/dia.js/wiki)",
     "repository": {
