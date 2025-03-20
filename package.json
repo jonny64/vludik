@@ -60,6 +60,16 @@
                 "title": "Copy type"
             }
         ],
+        "configuration": {
+            "title": "vludik",
+            "properties": {
+                "vludik.frontendPath": {
+                    "type": "string",
+                    "default": "front/root/_/app",
+                    "description": "Path to frontend app files"
+                }
+            }
+        },
         "keybindings": [
             {
                 "command": "extension.goto_select",
