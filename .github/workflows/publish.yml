@@ -1,14 +1,20 @@
 on:
   workflow_dispatch:
+  push:
+    tags:
+      - "*"
     
 name: publish
 jobs:
+  test_call:
+    uses: ./.github/workflows/build.yml
   publish:
-    name: publish
+    needs: test_call
     runs-on: ubuntu-latest
+    name: publish
     steps:
       - uses: actions/checkout@v2
-      - run: npm install
+      - run: npm ci
       - uses: lannonbr/vsce-action@master
         with:
           args: "publish -p $VSCE_TOKEN"
