@@ -6,6 +6,8 @@ on:
     
 name: publish
 jobs:
+  test_call:
+    uses: ./.github/workflows/build.yml
   publish:
     name: publish
     runs-on: ubuntu-latest
