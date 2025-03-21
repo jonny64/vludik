@@ -9,8 +9,9 @@ jobs:
   test_call:
     uses: ./.github/workflows/build.yml
   publish:
-    name: publish
+    needs: test_call
     runs-on: ubuntu-latest
+    name: publish
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
