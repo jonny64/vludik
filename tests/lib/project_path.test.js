@@ -1,24 +1,30 @@
 const {project_path} = require ('../../lib/path')
+const path = require('path')
 
 test ('project path from content', () => {
-	let as_is = project_path (`p:\\projects\\app\\slices\\budget\\back\\lib\\Content\\voc_cfo.js`)
-	let to_be = `p:\\projects\\app\\slices\\budget`
-	expect(as_is).toBe(to_be)
+  const inputPath = path.join('p:', 'projects', 'app', 'slices', 'budget', 'back', 'lib', 'Content', 'voc_cfo.js')
+  const expectedPath = path.join('p:', 'projects', 'app', 'slices', 'budget')
+
+  expect(project_path(inputPath)).toBe(expectedPath)
 })
 
 test ('project path from model', () => {
-	let as_is = project_path (`p:\\projects\\app\\back\\lib\\Model\\oltp\\voc_cfo.js`)
-	let to_be = `p:\\projects\\app`
-	expect(as_is).toBe(to_be)
+  const inputPath = path.join('p:', 'projects', 'app', 'back', 'lib', 'Model', 'oltp', 'voc_cfo.js')
+  const expectedPath = path.join('p:', 'projects', 'app')
+
+  expect(project_path(inputPath)).toBe(expectedPath)
 })
 
 test ('project path from view', () => {
-	let as_is = project_path (`p:\\projects\\app\\slices\\budget\\front\\root\\_\\app\\html\\voc_cfo.html`)
-	let to_be = `p:\\projects\\app\\slices\\budget`
-	expect(as_is).toBe(to_be)
+  const inputPath = path.join('p:', 'projects', 'app', 'slices', 'budget', 'front', 'root', '_', 'app', 'html', 'voc_cfo.html')
+  const expectedPath = path.join('p:', 'projects', 'app', 'slices', 'budget')
+
+  expect(project_path(inputPath)).toBe(expectedPath)
 })
 
 test ('project path error', () => {
-	let as_is = () => project_path (`p:\\projects\\app`)
+  const inputPath = path.join('p:', 'projects', 'app')
+  const as_is = () => project_path(inputPath)
+
 	expect(as_is).toThrowError('cant find project path')
 })

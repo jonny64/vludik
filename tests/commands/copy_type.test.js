@@ -1,9 +1,10 @@
 const {make_from_to} = require ('../../commands/copy_type')
-
+const path = require('path')
 const fs = require ('fs')
 jest.mock('fs')
-const root = `p:\\app`
-const slice_root = `p:\\app\\slices\\budget`
+
+const root = path.join('p:', 'app')
+const slice_root = path.join('p:', 'app', 'slices', 'budget')
 
 const mock_fs = f => {
 	let files = f
@@ -14,31 +15,32 @@ const mock_fs = f => {
 }
 
 test ('copy_type popup no slice', async () => {
+    let app = path.join(slice_root, 'front', 'root', '_', 'app')
+    let back = path.join(slice_root, 'back')
 
-	let app = `${slice_root}\\front\\root\\_\\app\\`
-	let back = `${slice_root}\\back`
+    const mockFiles = {
+        [path.join(back, 'lib', 'Content', 'voc_budget_arts.js')]: 1,
+        [path.join(back, 'lib', 'Model', 'oltp', 'voc_budget_arts.js')]: 1,
+        [path.join(app, 'js', 'data', 'voc_budget_art_popup.js')]: 1,
+        [path.join(app, 'js', 'view', 'voc_budget_art_popup.js')]: 1,
+        [path.join(app, 'html', 'voc_budget_art_popup.html')]: 1,
+    }
 
-	mock_fs ({
-		[`${back}lib\\Content\\voc_budget_arts.js`]: 1,
-		[`${back}lib\\Model\\oltp\\voc_budget_arts.js`]: 1,
-		[`${app}js\\data\\voc_budget_art_popup.js`]: 1,
-		[`${app}js\\view\\voc_budget_art_popup.js`]: 1,
-		[`${app}html\\voc_budget_art_popup.html`]: 1,
-	})
+    mock_fs(mockFiles)
 
 	let as_is = await make_from_to ({root: slice_root, slice_path: '', type: 'voc_budget_art_popup', new_type: 'voc_cfo_art_popup'})
 	let to_be = [
 		[
-			`${app}js\\data\\voc_budget_art_popup.js`,
-			`${app}js\\data\\voc_cfo_art_popup.js`
+            path.join(app, 'js', 'data', 'voc_budget_art_popup.js'),
+            path.join(app, 'js', 'data', 'voc_cfo_art_popup.js')
 		],
 		[
-			`${app}js\\view\\voc_budget_art_popup.js`,
-			`${app}js\\view\\voc_cfo_art_popup.js`
+            path.join(app, 'js', 'view', 'voc_budget_art_popup.js'),
+            path.join(app, 'js', 'view', 'voc_cfo_art_popup.js')
 		],
 		[
-			`${app}html\\voc_budget_art_popup.html`,
-			`${app}html\\voc_cfo_art_popup.html`
+            path.join(app, 'html', 'voc_budget_art_popup.html'),
+            path.join(app, 'html', 'voc_cfo_art_popup.html')
 		],
 	]
 
@@ -46,24 +48,25 @@ test ('copy_type popup no slice', async () => {
 })
 
 test ('copy_type popup with slice', async () => {
+    let app = path.join('front', 'root', '_', 'app')
+    let slice_path_target = path.join(root, 'slices', 'vocs')
 
-	let app = `front\\root\\_\\app`
-	let slice_path_target = `${root}\\slices\\vocs`
+    const mockFiles = {
+        [path.join(slice_root, 'back', 'lib', 'Content', 'voc_budget_arts.js')]: 1,
+        [path.join(slice_root, 'back', 'lib', 'Model', 'oltp', 'voc_budget_arts.js')]: 1,
+        [path.join(slice_root, app, 'js', 'data', 'voc_budget_art_popup.js')]: 1,
+        [path.join(slice_root, app, 'js', 'view', 'voc_budget_art_popup.js')]: 1,
+        [path.join(slice_root, app, 'html', 'voc_budget_art_popup.html')]: 1,
+        [path.join(slice_path_target, 'back', 'lib', 'Model', 'oltp', 'voc_cfo_arts.js')]: 1,
+    }
 
-	mock_fs ({
-		[`${slice_root}\\back\\lib\\Content\\voc_budget_arts.js`]: 1,
-		[`${slice_root}\\back\\lib\\Model\\oltp\\voc_budget_arts.js`]: 1,
-		[`${slice_root}\\${app}\\js\\data\\voc_budget_art_popup.js`]: 1,
-		[`${slice_root}\\${app}\\js\\view\\voc_budget_art_popup.js`]: 1,
-		[`${slice_root}\\${app}\\html\\voc_budget_art_popup.html`]: 1,
-		[`${slice_path_target}\\back\\lib\\Model\\oltp\\voc_cfo_arts.js`]: 1,
-	})
+    mock_fs(mockFiles)
 
 	let as_is = await make_from_to ({root: slice_root, slice_path: slice_path_target, type: 'voc_budget_arts', new_type: 'voc_cfo_arts'})
 	let to_be = [
 		[
-			`${slice_root}\\back\\lib\\Content\\voc_budget_arts.js`,
-			`${slice_path_target}\\back\\lib\\Content\\voc_cfo_arts.js`,
+            path.join(slice_root, 'back', 'lib', 'Content', 'voc_budget_arts.js'),
+            path.join(slice_path_target, 'back', 'lib', 'Content', 'voc_cfo_arts.js'),
 		],
 	]
 
@@ -71,24 +74,25 @@ test ('copy_type popup with slice', async () => {
 })
 
 test ('copy_type popup slice to root', async () => {
-
-	let app = `front\\root\\_\\app`
+    let app = path.join('front', 'root', '_', 'app')
 	let slice_path_target = root
 
-	mock_fs ({
-		[`${slice_root}\\back\\lib\\Content\\voc_budget_arts.js`]: 1,
-		[`${slice_root}\\back\\lib\\Model\\oltp\\voc_budget_arts.js`]: 1,
-		[`${slice_root}\\${app}\\js\\data\\voc_budget_art_popup.js`]: 1,
-		[`${slice_root}\\${app}\\js\\view\\voc_budget_art_popup.js`]: 1,
-		[`${slice_root}\\${app}\\html\\voc_budget_art_popup.html`]: 1,
-		[`${slice_path_target}\\back\\lib\\Model\\oltp\\voc_cfo_arts.js`]: 1,
-	})
+    const mockFiles = {
+        [path.join(slice_root, 'back', 'lib', 'Content', 'voc_budget_arts.js')]: 1,
+        [path.join(slice_root, 'back', 'lib', 'Model', 'oltp', 'voc_budget_arts.js')]: 1,
+        [path.join(slice_root, app, 'js', 'data', 'voc_budget_art_popup.js')]: 1,
+        [path.join(slice_root, app, 'js', 'view', 'voc_budget_art_popup.js')]: 1,
+        [path.join(slice_root, app, 'html', 'voc_budget_art_popup.html')]: 1,
+        [path.join(slice_path_target, 'back', 'lib', 'Model', 'oltp', 'voc_cfo_arts.js')]: 1,
+    }
+    
+    mock_fs(mockFiles)
 
 	let as_is = await make_from_to ({root: slice_root, slice_path: slice_path_target, type: 'voc_budget_arts', new_type: 'voc_cfo_arts'})
 	let to_be = [
 		[
-			`${slice_root}\\back\\lib\\Content\\voc_budget_arts.js`,
-			`${slice_path_target}\\back\\lib\\Content\\voc_cfo_arts.js`,
+            path.join(slice_root, 'back', 'lib', 'Content', 'voc_budget_arts.js'),
+            path.join(slice_path_target, 'back', 'lib', 'Content', 'voc_cfo_arts.js'),
 		],
 	]
 
@@ -96,17 +100,18 @@ test ('copy_type popup slice to root', async () => {
 })
 
 test ('copy_type popup to popup no slice', async () => {
+    let app = path.join(root, 'front', 'root', '_', 'app')
+    let back = path.join(root, 'back')
 
-	let app = `${root}\\front\\root\\_\\app\\`
-	let back = `${root}\\back\\`
+    const mockFiles = {
+        [path.join(back, 'lib', 'Content', 'tb_claim_work_goods.js')]: 1,
+        [path.join(back, 'lib', 'Model', 'oltp', 'tb_claim_work_goods.js')]: 1,
+        [path.join(app, 'js', 'data', 'tb_claim_work_goods_popup.js')]: 1,
+        [path.join(app, 'js', 'view', 'tb_claim_work_goods_popup.js')]: 1,
+        [path.join(app, 'html', 'tb_claim_work_goods_popup.html')]: 1,
+    }
 
-	mock_fs ({
-		[`${back}lib\\Content\\tb_claim_work_goods.js`]: 1,
-		[`${back}lib\\Model\\oltp\\tb_claim_work_goods.js`]: 1,
-		[`${app}js\\data\\tb_claim_work_goods_popup.js`]: 1,
-		[`${app}js\\view\\tb_claim_work_goods_popup.js`]: 1,
-		[`${app}html\\tb_claim_work_goods_popup.html`]: 1,
-	})
+    mock_fs(mockFiles)
 
 	let as_is = await make_from_to ({
 		root       : root,
@@ -117,16 +122,16 @@ test ('copy_type popup to popup no slice', async () => {
 
 	let to_be = [
 		[
-			`${app}js\\data\\tb_claim_work_goods_popup.js`,
-			`${app}js\\data\\tb_claim_work_staff_popup.js`
+            path.join(app, 'js', 'data', 'tb_claim_work_goods_popup.js'),
+            path.join(app, 'js', 'data', 'tb_claim_work_staff_popup.js')
 		],
 		[
-			`${app}js\\view\\tb_claim_work_goods_popup.js`,
-			`${app}js\\view\\tb_claim_work_staff_popup.js`
+            path.join(app, 'js', 'view', 'tb_claim_work_goods_popup.js'),
+            path.join(app, 'js', 'view', 'tb_claim_work_staff_popup.js')
 		],
 		[
-			`${app}html\\tb_claim_work_goods_popup.html`,
-			`${app}html\\tb_claim_work_staff_popup.html`
+            path.join(app, 'html', 'tb_claim_work_goods_popup.html'),
+            path.join(app, 'html', 'tb_claim_work_staff_popup.html')
 		],
 	]
 
@@ -134,19 +139,20 @@ test ('copy_type popup to popup no slice', async () => {
 })
 
 test ('copy_type subroster to subroster no html no slice', async () => {
+    let app = path.join(root, 'front', 'root', '_', 'app')
+    let back = path.join(root, 'back')
 
-	let app = `${root}\\front\\root\\_\\app\\`
-	let back = `${root}\\back\\`
+    const mockFiles = {
+        [path.join(back, 'lib', 'Content', 'tb_rental_ctr_intrs.js')]: 1,
+        [path.join(back, 'lib', 'Model', 'oltp', 'tb_rental_ctr_intrs.js')]: 1,
+        [path.join(app, 'js', 'data', 'tb_rental_ctr_intrs.js')]: 1,
+        [path.join(app, 'js', 'view', 'tb_rental_ctr_intrs.js')]: 1,
+        [path.join(app, 'js', 'data', 'tb_rental_ctr_intr.js')]: 1,
+        [path.join(app, 'js', 'view', 'tb_rental_ctr_intr.js')]: 1,
+        [path.join(app, 'html', 'tb_rental_ctr_intr.html')]: 1,
+    }
 
-	mock_fs ({
-		[`${back}lib\\Content\\tb_rental_ctr_intrs.js`]: 1,
-		[`${back}lib\\Model\\oltp\\tb_rental_ctr_intrs.js`]: 1,
-		[`${app}js\\data\\tb_rental_ctr_intrs.js`]: 1,
-		[`${app}js\\view\\tb_rental_ctr_intrs.js`]: 1,
-		[`${app}js\\data\\tb_rental_ctr_intr.js`]: 1,
-		[`${app}js\\view\\tb_rental_ctr_intr.js`]: 1,
-		[`${app}html\\tb_rental_ctr_intr.html`]: 1,
-	})
+    mock_fs(mockFiles)
 
 	let as_is = await make_from_to ({
 		root       : root,
@@ -157,20 +163,20 @@ test ('copy_type subroster to subroster no html no slice', async () => {
 
 	let to_be = [
 		[
-			`${back}lib\\Model\\oltp\\tb_rental_ctr_intrs.js`,
-			`${back}lib\\Model\\oltp\\tb_lease_ctr_intrs.js`,
+            path.join(back, 'lib', 'Model', 'oltp', 'tb_rental_ctr_intrs.js'),
+            path.join(back, 'lib', 'Model', 'oltp', 'tb_lease_ctr_intrs.js'),
 		],
 		[
-			`${back}lib\\Content\\tb_rental_ctr_intrs.js`,
-			`${back}lib\\Content\\tb_lease_ctr_intrs.js`,
+            path.join(back, 'lib', 'Content', 'tb_rental_ctr_intrs.js'),
+            path.join(back, 'lib', 'Content', 'tb_lease_ctr_intrs.js'),
 		],
 		[
-			`${app}js\\data\\tb_rental_ctr_intrs.js`,
-			`${app}js\\data\\tb_lease_ctr_intrs.js`
+            path.join(app, 'js', 'data', 'tb_rental_ctr_intrs.js'),
+            path.join(app, 'js', 'data', 'tb_lease_ctr_intrs.js')
 		],
 		[
-			`${app}js\\view\\tb_rental_ctr_intrs.js`,
-			`${app}js\\view\\tb_lease_ctr_intrs.js`
+            path.join(app, 'js', 'view', 'tb_rental_ctr_intrs.js'),
+            path.join(app, 'js', 'view', 'tb_lease_ctr_intrs.js')
 		],
 	]
 
@@ -178,19 +184,20 @@ test ('copy_type subroster to subroster no html no slice', async () => {
 })
 
 test ('copy_type item to item no Model Content no slice', async () => {
+    let app = path.join(root, 'front', 'root', '_', 'app')
+    let back = path.join(root, 'back')
 
-	let app = `${root}\\front\\root\\_\\app\\`
-	let back = `${root}\\back\\`
+    const mockFiles = {
+        [path.join(back, 'lib', 'Content', 'tb_rental_ctr_intrs.js')]: 1,
+        [path.join(back, 'lib', 'Model', 'oltp', 'tb_rental_ctr_intrs.js')]: 1,
+        [path.join(app, 'js', 'data', 'tb_rental_ctr_intrs.js')]: 1,
+        [path.join(app, 'js', 'view', 'tb_rental_ctr_intrs.js')]: 1,
+        [path.join(app, 'js', 'data', 'tb_rental_ctr_intr.js')]: 1,
+        [path.join(app, 'js', 'view', 'tb_rental_ctr_intr.js')]: 1,
+        [path.join(app, 'html', 'tb_rental_ctr_intr.html')]: 1,
+    }
 
-	mock_fs ({
-		[`${back}lib\\Content\\tb_rental_ctr_intrs.js`]: 1,
-		[`${back}lib\\Model\\oltp\\tb_rental_ctr_intrs.js`]: 1,
-		[`${app}js\\data\\tb_rental_ctr_intrs.js`]: 1,
-		[`${app}js\\view\\tb_rental_ctr_intrs.js`]: 1,
-		[`${app}js\\data\\tb_rental_ctr_intr.js`]: 1,
-		[`${app}js\\view\\tb_rental_ctr_intr.js`]: 1,
-		[`${app}html\\tb_rental_ctr_intr.html`]: 1,
-	})
+    mock_fs(mockFiles)
 
 	let as_is = await make_from_to ({
 		root       : root,
@@ -201,16 +208,16 @@ test ('copy_type item to item no Model Content no slice', async () => {
 
 	let to_be = [
 		[
-			`${app}js\\data\\tb_rental_ctr_intr.js`,
-			`${app}js\\data\\tb_lease_ctr_intr.js`
+            path.join(app, 'js', 'data', 'tb_rental_ctr_intr.js'),
+            path.join(app, 'js', 'data', 'tb_lease_ctr_intr.js')
 		],
 		[
-			`${app}js\\view\\tb_rental_ctr_intr.js`,
-			`${app}js\\view\\tb_lease_ctr_intr.js`
+            path.join(app, 'js', 'view', 'tb_rental_ctr_intr.js'),
+            path.join(app, 'js', 'view', 'tb_lease_ctr_intr.js')
 		],
 		[
-			`${app}html\\tb_rental_ctr_intr.html`,
-			`${app}html\\tb_lease_ctr_intr.html`
+            path.join(app, 'html', 'tb_rental_ctr_intr.html'),
+            path.join(app, 'html', 'tb_lease_ctr_intr.html')
 		],
 	]
 
