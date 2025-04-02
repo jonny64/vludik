@@ -5,40 +5,35 @@ import * as fs from 'fs'
 import * as vscode from 'vscode'
 
 const workspace_dir = {
-	no_slices   : path.resolve(__dirname, '../../projects/elu_dia_slick_template')
+    no_slices: path.resolve(__dirname, '..', '..', 'projects', 'elu_dia_slick_template')
 }
 
-const src_path = 'back/lib/Content/users.js'
+const src_path = path.join('back', 'lib', 'Content', 'users.js')
 const dst_path = [
-	'back/lib/Content/users_copy.js'
-	, 'back/lib/Model/users_copy.js'
-	, 'front/root/_/app/js/data/users_copy.js'
-	, 'front/root/_/app/js/view/users_copy.js'
-	, 'front/root/_/app/html/users_copy.html'
+    path.join('back', 'lib', 'Content', 'users_copy.js'),
+    path.join('back', 'lib', 'Model', 'users_copy.js'),
+    path.join('front', 'root', '_', 'app', 'js', 'data', 'users_copy.js'),
+    path.join('front', 'root', '_', 'app', 'js', 'view', 'users_copy.js'),
+    path.join('front', 'root', '_', 'app', 'html', 'users_copy.html')
 ]
 
 suite ('Copy type Test Suite', () => {
 
-
 	before (async () => {
-
 		for (let p of dst_path) {
 			for (let root of [workspace_dir.no_slices]) {
 				let copy_path = path.join(root, p)
 				console.log({copy_path})
 				if (fs.existsSync (copy_path)) {
 					console.log (`rm ${copy_path}`)
-					await fs.unlinkSync (copy_path)
+                    await fs.promises.unlink(copy_path)
 				}
 			}
 		}
-
-
 	})
 
 	it ('should copy type in project WITHOUT slices', async () => {
-
-		let project_path = path.join(workspace_dir.no_slices)
+        let project_path = workspace_dir.no_slices
 		let folder = vscode.Uri.file (project_path)
 
 		await vscode.commands.executeCommand('vscode.openFolder', folder)
@@ -62,5 +57,4 @@ suite ('Copy type Test Suite', () => {
 			assert (fs.existsSync (to_be), `should exist ${to_be}`)
 		}
 	}).timeout(30000)
-
 })
